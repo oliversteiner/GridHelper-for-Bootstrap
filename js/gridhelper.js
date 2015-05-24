@@ -1,16 +1,27 @@
-/**
- * Created by ost on 24.05.15.
+/*!
+ * GridHelper for Bootstrap v0.1 (http://mollo.com/gridHelpter)
+ * Copyright 2015 Oliver Steiner
+ * Licensed under MIT (https://github.com/twbs/GridHelper_for_bootstrap/blob/master/LICENSE)
  */
 
-function GridHelper(name, sound) {
-    this.name = name;
-    this.sound = sound;
+// GridHelper CLASS DEFINITION
+// ======================
+
+function GridHelper() {
+    this.viewport = null;
 }
+
+
+// init
+// ======================
 
 GridHelper.prototype.init = function () {
     console.log("init gridHelper");
+    $("#develop").addClass('active');
+    $("#develop-start").hide();
 
-    this.check_layout_size();
+    this.viewPort();
+    this.markColumns();
     // showActualSize();
     // showColDivs();
     // showColInfos();
@@ -18,58 +29,86 @@ GridHelper.prototype.init = function () {
     $(window).resize(function () {
         // showColInfos();
         // activateChanger();
+        //  this.viewport();
+
     });
-}
 
+};
 
-GridHelper.prototype.check_layout_size = function () {
-    console.log("check_layout_size");
+// viewport
+// ======================
+
+GridHelper.prototype.viewPort = function () {
 
     var width = $(window).width();
     console.log(width);
 
-    switch (width) {
-        // LG - Violet
-        // Large desktops and laptops
-        // min-width: 1200px
+    if (width <= 480) {
+        // XXS - GREEN
+        // Landscape phones and smaller */
+        // max-width: 480px
+        this.viewport = 'xxs';
+    }
 
+    else if (width < 768) {
+        // XS - BLUE
+        // Landscape phones and portrait tablets */
+        // min-width:767px
+        this.viewport = 'xs';
+    }
 
-        // MD - Yellow
-        //  Portrait tablets and medium desktops */
-        // min-width: 992px
-        // max-width: 1199px
-
-
+    else if (width < 992) {
         // SM - RED
         // Portrait tablets and small desktops */
         // min-width: 768px
         // max-width: 991px
+        this.viewport = 'sm';
+    }
 
+    else if (width < 1200) {
+        // MD - Yellow
+        //  Portrait tablets and medium desktops */
+        // min-width: 992px
+        // max-width: 1199px
+        this.viewport = 'md';
+    }
 
-        // XS - BLUE
-        // Landscape phones and portrait tablets */
-        // min-width:767px
+    else if (width >= 1200) {
+        // LG - Violet
+        // Large desktops and laptops
+        // min-width: 1200px
+        this.viewport = 'lg';
+    }
 
-
-        // XXS - GREEN
-        // Landscape phones and smaller */
-        // max-width: 480px
-
+    else {
+        this.viewport = null;
 
     }
 
-}
+    console.log(this.viewport);
+    return this.viewport;
+
+};
 
 
-function showActualSize() {
-    $("#develop").addClass('active');
-    $("#develop-start").hide();
-}
+// Mark Columns
+// ======================
 
+GridHelper.prototype.markColumns = function () {
+
+    var all_col = $("[class*=col-]");
+    //  console.log(all_col); // TODO remove
+
+    all_col.addClass('ghb-col'); // G rid H elper B ootstrap
+};
+
+
+// OLD CODE
+// ======================
 
 function showColInfos() {
     var elem1 = document.getElementById("responsive-status");
-    var colstatus = window.getComputedStyle(elem1, ':after').getPropertyValue('content');
+    //   var colstatus = window.getComputedStyle(elem1, ':after').getPropertyValue('content'); // TODO remove
 
     $('span.gridhelper-col-container').remove();
 
@@ -130,7 +169,7 @@ function changeCol(elem, offset) {
 function activateChanger() {
     $('.gridhelper-col-container-click').click(function () {
         changeCol(this, false);
-    })
+    });
 
     $('.gridhelper-col-container-offset-click').click(function () {
         changeCol(this, true);
@@ -183,7 +222,7 @@ function inputElemSelect(c, s, id, offset) {
     }
     html = "<select onchange = changeColNumber('" + id + "') class='" + c + "' id='" + id + "'>";
 
-    for (i = 0; i <= 12; i++) {
+    for (var i = 0; i <= 12; i++) {
         if (s == i) {
             selected = "selected";
         }
@@ -196,3 +235,17 @@ function inputElemSelect(c, s, id, offset) {
 
     return html;
 }
+
+
+$(document).ready(function () {
+
+    gridhelper = new GridHelper('Kitty', 'Meow');
+    gridhelper.init();
+});
+
+$(window).resize(function () {
+    // showColInfos();
+    activateChanger();
+    gridhelper.viewPort();
+
+});
