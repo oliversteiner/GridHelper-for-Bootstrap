@@ -1,18 +1,31 @@
-#develop {
+#gridhelper-monitor {
     top: 0;
     left: 0;
     display: block;
     position: fixed;
     z-index: 3000;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: solid #808080 1px;
+    color: white;
+    padding: 0 20px 20px 20px;
+    text-align: center;
 }
 
-#develop-start {
+#gridhelper-monitor-button {
+    position: relative;
+    top: 5px;
+    color: #0078ff;
+}
+
+#gridhelper-monitor-button:hover {
     cursor: pointer;
+    color: white;
+    text-decoration: none;
 }
 
-
-
-
+#responsive-status {
+    font-size: 30px;
+}
 
 .row {
 }
@@ -25,40 +38,28 @@
 
 }
 
-
-
 /*Col Info Panel*/
-
-.ghb-infopanel > div{
-    display: inline-block;
-    margin: 2px;
-    padding: 2px;
-    border: solid black 1px;
-}
-
-
-/* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */
-
-#develop.active {
-    background-color: rgba(0, 0, 0, 0.6);
-    border: solid #808080 1px;
-    color: white;
-    padding: 0 20px 20px 20px;
-
-}
-
-.inseldebug,
-.gridhelper-col-container-click,
-.inseldebug-offset,
-.gridhelper-col-container-offset-click {
-    cursor: pointer;
+.ghb-infopanel {
+    position: absolute;
+    left: 0;
+font-size: 12px;
     color: white;
     padding: 0 8px 0 8px;
     background-color: rgba(0, 0, 0, 0.6);
     border-right: solid #000000 1px;
     border-bottom: solid #000000 1px;
-    border-radius: 0 0 12px 0;
+    border-radius: 0 0 8px 0;
 }
+
+.ghb-infopanel:hover {
+    background-color: black;
+}
+
+.ghb-infopanel > div {
+    display: inline-block;
+}
+
+
 
 .inseldebug:hover,
 .gridhelper-col-container-click:hover,
@@ -69,56 +70,51 @@
 
 }
 
-
 .inseldebug,
 .gridhelper-col-container-click {
-
-
 
 }
 
 .inseldebug-offset,
 .gridhelper-col-container-offset-click {
-    background-color: rgba(100, 0, 0, 0.6);
-
+    background-color: rgba(100, 0, 0, 0.1);
 
 }
 
 .inseldebug-offset,
 .inseldebug {
 
+
+}
+
+
+
+
+.ghb-info-col {
+}
+
+.ghb-info-offset select,
+.ghb-info-col select{
     -webkit-appearance: none;
-
-}
-
-.gridhelper-col-container {
-    position: absolute;
-    left: 0;
-
-}
-
-.gridhelper-col-container:hover {
-background-color: black;
-}
-
-.gridhelper-col-container input {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.2);
     color: white;
-    padding: 0;
-    margin: 0;
+    padding: 2px 0 2px 6px;
+    margin: 1px;
     border: none;
     text-align: center;
+
+
 }
 
-#responsive-status {
-    font-size: 30px;
-}
 
-/* MAGENTA
+
+/* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */
+
+/* green
      Large desktops and laptops */
 @media (min-width: 1200px) {
     div.row > div.ghb-col {
-        border: solid magenta 1px;
+        border: solid green 1px;
     }
 
     #responsive-status:after {
@@ -131,7 +127,7 @@ background-color: black;
 Portrait tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
     div.row > div.ghb-col {
-        border: solid yellow 1px;
+        border: solid #ffc229 1px;
     }
 
     #responsive-status:after {
@@ -166,16 +162,14 @@ Landscape phones and portrait tablets */
 
 }
 
-/* GREEN
+/* Magenta
 Landscape phones and smaller */
 @media (max-width: 480px) {
     div.row > div.ghb-col {
-        border: solid #008000 1px;
+        border: solid magenta 1px;
     }
 
+    #responsive-status:after {
+        content: 'xxs';
+    }
 }
-
-.red {
-    background-color: red;
-}
-
