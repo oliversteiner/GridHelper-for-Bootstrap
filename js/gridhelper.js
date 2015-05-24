@@ -10,6 +10,7 @@
 function GridHelper() {
     this.viewport = 0;
     this.on = 0;
+    this.on_popover = 0;
 }
 
 
@@ -103,8 +104,9 @@ GridHelper.prototype.addColPanel = function () {
     var info_panel = "<div class='ghb-infopanel'>"
         + "<div class='ghb-info-col'>0</div>"
         + "<div class='ghb-info-offset'>0</div>"
-        + "<div class='ghb-info-hide'>H</div>"
+        + "<div class='ghb-info-hide'></div>"
         + "<div class='ghb-info-code'>CODE</div>"
+        + "<div class='ghb-info-code-content'></div>"
         + "</div>";
 
     all_col.prepend(info_panel);
@@ -174,43 +176,76 @@ GridHelper.prototype.initColPanel = function () {
 // show computed classes
 // ======================
 
-GridHelper.prototype.initColPanelCode = function (id) {
-    var html = "col-xs-3";
+GridHelper.prototype.initColPanelCode = function () {
 
 
+    // take all cols
     var all_col = $("[class*=col-]");
 
-    $.each(all_col, function(){
+    // foreach col take all classes and show on Panel
+    $.each(all_col, function () {
 
-        var all_class_names = $(this).attr( "class" );
-
-        console.log(all_class_names);
-// put all classes in array
-        var res = all_class_names.trim();
-        var res = res.split(" ");
-
-        console.log(res);
-
-        // remove temp gridhelper-classes
-        var remove = ['ghb-col'];
-
-
-        // add Code to Panel
-        $(this).children().children('.ghb-info-code').html(test);
+        var html = '<a tabindex="" role="button" class="btn-small"  onclick="gridhelper.showPopover(this)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'
+            + '<div ></div>';
+        $(this).children().children('.ghb-info-code').html(html);
 
     })
 
 
-    function removeArrValue(arr,value){
-        var index = arr.indexOf(value);
-        if (index > -1) {
-            arr.splice(index, 1);
-        }
-        return arr;
+}
+
+// show computed classes
+// ======================
+
+GridHelper.prototype.showPopover = function (elem, direct) {
+
+    console.log(elem);
+
+    if (false == direct) {
+        var all_class_names = $(elem).parent().parent().parent().attr("class");
+    } else {
+        var all_class_names = $(direct).attr("class");
     }
 
+    // console.log(all_class_names);
+    // put all classes in array
+    var str = all_class_names.trim();
+    str = str.replace('ghb-col', '');
+    var arr = str.split(' ');
+    arr.sort();
+    str = arr.join(' ');
 
-}
+    // TODO Sort the Array with
+    // col-xs-*
+    // col-sm-*
+    // col-md-*
+    // col-lg-*
+    // others
+
+    //  all_class_names = all_class_names.replace('\,', '');
+    str.trim();
+
+    console.log(str);
+    all_class_names = str;
+
+    // console.log(all_class_names);
+
+
+    var template = '<div class="popover ghb-popover" role="tooltip"><div class="arrow ghb-arrow"></div><div class="popover-content"></div></div>';
+
+
+    var options = {
+        trigger: 'focus',
+        content: all_class_names,
+        template: template
+    }
+
+    $(elem).popover(options);
+    $(elem).popover('toggle');
+    this.on_popover = true;
+
+
+};
 
 
 // reset InfoPanel Col
@@ -270,7 +305,7 @@ GridHelper.prototype.inputElemSelect = function (class_name, col_number, id, off
 };
 
 
-// inputElemSelect
+// updateColNumber
 // ======================
 
 GridHelper.prototype.updateColNumber = function (id, offset) {
@@ -300,6 +335,54 @@ GridHelper.prototype.updateColNumber = function (id, offset) {
 
 
 };
+
+// hide Popovers
+// ======================
+
+GridHelper.prototype.hideAllPopovers = function () {
+    $('.ghb-popover').popover('hide');
+    this.on_popover = false;
+
+}
+
+// show Popovers
+// ======================
+
+GridHelper.prototype.showAllPopovers = function () {
+    console.log('showAllPopovers');
+
+    var all_col = $("[class*=col-]");
+
+    // foreach col take all classes and show on Panel
+    $.each(all_col, function () {
+        console.log(this);
+
+        var elem = $(this);
+        console.log(elem);
+
+        var trigger = $(elem).children().children('.ghb-info-code');
+
+        gridhelper.showPopover(trigger,elem);
+
+    })
+
+    this.on_popover = true;
+
+}
+
+// Toggle Popovers
+// ======================
+
+GridHelper.prototype.toggleAllPopovers = function () {
+
+
+    if (this.on_popover == true) {
+        this.hideAllPopovers();
+    } else if (this.on_popover == false) {
+        this.showAllPopovers();
+    }
+}
+
 
 // hide
 // ======================
@@ -334,13 +417,13 @@ GridHelper.prototype.show = function () {
 
 GridHelper.prototype.toggle = function () {
 
-    if ( this.on === true ) {
+    if (this.on === true) {
         this.hide();
-    } else if ( this.on === false ) {
+    } else if (this.on === false) {
         this.show();
     }
 
-}
+};
 
 
 // inputElemSelect
@@ -348,13 +431,15 @@ GridHelper.prototype.toggle = function () {
 
 GridHelper.prototype.addGripHelperMonitor = function () {
     var html = "<div id='gridhelper-monitor'>"
-        + "<a id='gridhelper-monitor-button'>GridHelper</a>"
+        + "<a id='gridhelper-onoff-button'class='btn'>GridHelper</a>"
         + "<div id='responsive-status'></div>"
+        + "<a id='gridhelper-popover-button'class='btn'>Popover</a>"
         + "</div>";
+
 
     $('body').append(html);
 
-}
+};
 
 
 // Init Class
@@ -366,9 +451,16 @@ $(document).ready(function () {
     gridhelper = new GridHelper();
     gridhelper.init();
 
-    $('#gridhelper-monitor-button').click( function(){
-        console.log('click');
+    $('#gridhelper-onoff-button').click(function () {
         gridhelper.toggle();
+    })
+
+    $('#gridhelper-popover-button').click(function () {
+        gridhelper.toggleAllPopovers();
+    })
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
     })
 });
 
@@ -377,7 +469,6 @@ $(window).resize(function () {
     gridhelper.initColPanel();
 
 });
-
 
 
 // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array

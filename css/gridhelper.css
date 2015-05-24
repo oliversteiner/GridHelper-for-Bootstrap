@@ -4,20 +4,25 @@
     display: block;
     position: fixed;
     z-index: 3000;
-    background-color: rgba(0, 0, 0, 0.6);
-    border: solid #808080 1px;
+    border: solid #0d093a 1px;
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 0 20px 20px 20px;
+    padding: 10px 10px 10px 10px;
     text-align: center;
+    border-radius: 0 0 12px 0;
+
 }
 
-#gridhelper-monitor-button {
+#gridhelper-monitor a {
+    font-size: 12px;
+
     position: relative;
-    top: 5px;
     color: #0078ff;
+    margin: 0;
+    padding: 0;
 }
 
-#gridhelper-monitor-button:hover {
+#gridhelper-monitor a:hover {
     cursor: pointer;
     color: white;
     text-decoration: none;
@@ -42,24 +47,23 @@
 .ghb-infopanel {
     position: absolute;
     left: 0;
-font-size: 12px;
+    font-size: 12px;
     color: white;
     padding: 0 8px 0 8px;
     background-color: rgba(0, 0, 0, 0.6);
-    border-right: solid #000000 1px;
-    border-bottom: solid #000000 1px;
+    border-right: solid rgba(0, 0, 0, 0.8) 1px;
+    border-bottom: solid rgba(0, 0, 0, 0.8) 1px;
     border-radius: 0 0 8px 0;
 }
 
 .ghb-infopanel:hover {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .ghb-infopanel > div {
     display: inline-block;
+    margin-right: 5px;
 }
-
-
 
 .inseldebug:hover,
 .gridhelper-col-container-click:hover,
@@ -84,29 +88,55 @@ font-size: 12px;
 .inseldebug-offset,
 .inseldebug {
 
-
 }
 
+.ghb-info-code {
+    color: black;
+}
 
+.ghb-info-code a:hover {
+    color: white;
+}
 
+.ghb-info-code a span {
+    top: 3px;
+    margin: 0 0 0 0;
+    padding: 3px 6px 1px 6px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 
-.ghb-info-col {
 }
 
 .ghb-info-offset select,
-.ghb-info-col select{
+.ghb-info-col select {
     -webkit-appearance: none;
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
-    padding: 2px 0 2px 6px;
+    padding: 0px 5px 0px 12px;
     margin: 1px;
     border: none;
     text-align: center;
+    cursor: pointer;
+}
 
+.ghb-info-offset select:hover,
+.ghb-info-col select:hover{
+    color: #0078ff;
+}
+
+.ghb-popover.right > .arrow::after {
+    border-right-color: rgba(0, 0, 0, 0.8);
 
 }
 
-
+.ghb-popover {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #4385d8;
+    min-width: 200px;
+    word-spacing: 200px;
+    font-family: monospace;
+    font-weight: 300;
+}
 
 /* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */
 
