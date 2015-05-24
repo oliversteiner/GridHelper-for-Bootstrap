@@ -16,22 +16,15 @@ function GridHelper() {
 // ======================
 
 GridHelper.prototype.init = function () {
-    console.log("init gridHelper");
+    //  console.log("init gridHelper");
     $("#develop").addClass('active');
     $("#develop-start").hide();
 
     this.viewPort();
     this.markColumns();
-    // showActualSize();
-    // showColDivs();
-    // showColInfos();
+    this.addInfoPanel();
+    this.initInfoPanelCol();
 
-    $(window).resize(function () {
-        // showColInfos();
-        // activateChanger();
-        //  this.viewport();
-
-    });
 
 };
 
@@ -41,7 +34,7 @@ GridHelper.prototype.init = function () {
 GridHelper.prototype.viewPort = function () {
 
     var width = $(window).width();
-    console.log(width);
+    //  console.log(width);
 
     if (width <= 480) {
         // XXS - GREEN
@@ -97,10 +90,70 @@ GridHelper.prototype.viewPort = function () {
 GridHelper.prototype.markColumns = function () {
 
     var all_col = $("[class*=col-]");
-    //  console.log(all_col); // TODO remove
-
-    all_col.addClass('ghb-col'); // G rid H elper B ootstrap
+    all_col.addClass('ghb-col'); // GridHelperBootstrap-column
 };
+
+
+// Add InfoPanel to all Columns
+// ======================
+
+GridHelper.prototype.addInfoPanel = function () {
+
+    var all_col = $(".ghb-col");
+    var info_panel = "<div class='ghb-infopanel'>"
+        + "<div class='ghb-info-col'>0</div>"
+        + "<div class='ghb-info-offset'>0</div>"
+        + "<div class='ghb-info-hide'>H</div>"
+        + "<div class='ghb-info-code'>CODE</div>"
+        + "</div>";
+
+    all_col.prepend(info_panel);
+};
+
+
+// init InfoPanel Col
+// must be done for every change of Viewport
+// but must store manualy changes values
+// ======================
+
+GridHelper.prototype.initInfoPanelCol = function () {
+
+
+    var regex = new RegExp("col-" + this.viewport + "-([0-9+]{1,2})");
+
+    var all_cols_with_viewport = $(".ghb-col").filter(function () {
+        return ((" " + this.className + " ").match(regex) != null);
+    });
+
+    //  console.log(all_cols_with_viewport);
+
+
+    $.each(all_cols_with_viewport, function () {
+
+        var class_names = (" " + $(this).attr('class') + " ").match(regex);
+        if (class_names) {
+            var number_from_class = parseInt(class_names[1], 10);
+        }
+
+        console.log($(this).children().children());
+        console.log();
+
+        console.log(number_from_class);
+
+        $(this).children().children('.ghb-info-col').html(number_from_class);
+
+    });
+
+
+    //    var orig = "col-" + this.viewport + "-" + number[1];
+
+    //   console.log(orig);
+
+
+    // $(this).prepend('<span class="gridhelper-col-container" data-old="' + orig + '" data-col="' + this.viewport + '"><div class="gridhelper-col-container-click">' + number[1] + '</div></span>');
+
+
+}
 
 
 // OLD CODE

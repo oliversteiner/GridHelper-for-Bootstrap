@@ -25,7 +25,19 @@
 
 }
 
-/* Danks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */
+
+
+/*Col Info Panel*/
+
+.ghb-infopanel > div{
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+    border: solid black 1px;
+}
+
+
+/* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */
 
 #develop.active {
     background-color: rgba(0, 0, 0, 0.6);
@@ -105,7 +117,7 @@ background-color: black;
 /* MAGENTA
      Large desktops and laptops */
 @media (min-width: 1200px) {
-    div.row > div {
+    div.row > div.ghb-col {
         border: solid magenta 1px;
     }
 
@@ -118,7 +130,7 @@ background-color: black;
 /* Yellow
 Portrait tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
-    div.row > div {
+    div.row > div.ghb-col {
         border: solid yellow 1px;
     }
 
@@ -131,7 +143,7 @@ Portrait tablets and medium desktops */
 /* RED
 Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
-    div.row > div {
+    div.row > div.ghb-col {
         border: solid red 1px;
     }
 
@@ -144,7 +156,7 @@ Portrait tablets and small desktops */
 /* BLUE
 Landscape phones and portrait tablets */
 @media (max-width: 767px) {
-    div.row > div {
+    div.row > div.ghb-col {
         border: solid blue 1px;
     }
 
@@ -157,7 +169,7 @@ Landscape phones and portrait tablets */
 /* GREEN
 Landscape phones and smaller */
 @media (max-width: 480px) {
-    div.row > div {
+    div.row > div.ghb-col {
         border: solid #008000 1px;
     }
 
