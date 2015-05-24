@@ -2,28 +2,64 @@
  * Created by ost on 24.05.15.
  */
 
+function GridHelper(name, sound) {
+    this.name = name;
+    this.sound = sound;
+}
 
-
-
-
-
-
-$("#develop-start").click(function () {
-    gridHelperInit();
-});
-
-function gridHelperInit() {
+GridHelper.prototype.init = function () {
     console.log("init gridHelper");
 
-    showActualSize();
-    showColDivs();
-    showColInfos();
+    this.check_layout_size();
+    // showActualSize();
+    // showColDivs();
+    // showColInfos();
 
     $(window).resize(function () {
-        showColInfos();
-        activateChanger();
+        // showColInfos();
+        // activateChanger();
     });
 }
+
+
+GridHelper.prototype.check_layout_size = function () {
+    console.log("check_layout_size");
+
+    var width = $(window).width();
+    console.log(width);
+
+    switch (width) {
+        // LG - Violet
+        // Large desktops and laptops
+        // min-width: 1200px
+
+
+        // MD - Yellow
+        //  Portrait tablets and medium desktops */
+        // min-width: 992px
+        // max-width: 1199px
+
+
+        // SM - RED
+        // Portrait tablets and small desktops */
+        // min-width: 768px
+        // max-width: 991px
+
+
+        // XS - BLUE
+        // Landscape phones and portrait tablets */
+        // min-width:767px
+
+
+        // XXS - GREEN
+        // Landscape phones and smaller */
+        // max-width: 480px
+
+
+    }
+
+}
+
 
 function showActualSize() {
     $("#develop").addClass('active');
@@ -59,15 +95,15 @@ function showColInfos() {
 
 
 function showColDivs() {
-    var css = $("<link>", {
-        "rel": "stylesheet",
-        "type": "text/css",
-        "href": "../css/develop.css"
-    })[0];
-
-    document
-        .getElementsByTagName("head")[0]
-        .appendChild(css);
+    //var css = $("<link>", {
+    //    "rel": "stylesheet",
+    //    "type": "text/css",
+    //    "href": "../css/develop.css"
+    //})[0];
+    //
+    //document
+    //    .getElementsByTagName("head")[0]
+    //    .appendChild(css);
 }
 
 function responsive_state() {
@@ -93,19 +129,17 @@ function changeCol(elem, offset) {
 
 function activateChanger() {
     $('.gridhelper-col-container-click').click(function () {
-        changeCol(this,false);
+        changeCol(this, false);
     })
 
     $('.gridhelper-col-container-offset-click').click(function () {
-        changeCol(this,true);
+        changeCol(this, true);
     })
-
 
 
 }
 
-function changeColNumber(id)
-{
+function changeColNumber(id) {
     var elem = $("#" + id);
     var nummer = elem.val();
 
@@ -114,11 +148,9 @@ function changeColNumber(id)
     console.log(id);
 
 
-
     var colstatus = $(elem).parent().attr('data-col');
 
-    console.log("colstatus="+colstatus);
-
+    console.log("colstatus=" + colstatus);
 
 
     var oldClass = $(elem).parent().attr('data-old');
@@ -126,15 +158,15 @@ function changeColNumber(id)
     var newClass = "col-" + colstatus + "-" + nummer;
 
 
-    console.log("oldClass="+oldClass);
-    console.log("newClass="+newClass);
+    console.log("oldClass=" + oldClass);
+    console.log("newClass=" + newClass);
 
     $(elem).parent().parent().addClass(newClass);
     $(elem).parent().data('data-old', newClass);
     $(elem).parent().parent().removeClass(oldClass);
 
 
-    $(elem).parents.parent().removeClass(function(i, c){
+    $(elem).parents.parent().removeClass(function (i, c) {
         var m = c.match(/col{0,12}/);
         return m ? m[0] : m
     })
@@ -146,7 +178,9 @@ function changeColNumber(id)
 function inputElemSelect(c, s, id, offset) {
     var html = null;
     var selected = null;
-    if(offset) {c = c+"-offset"}
+    if (offset) {
+        c = c + "-offset"
+    }
     html = "<select onchange = changeColNumber('" + id + "') class='" + c + "' id='" + id + "'>";
 
     for (i = 0; i <= 12; i++) {
