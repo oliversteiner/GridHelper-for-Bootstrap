@@ -22,8 +22,8 @@ GridHelper.prototype.init = function () {
 
     this.viewPort();
     this.markColumns();
-    this.addInfoPanel();
-    this.initInfoPanelCol();
+    this.addColPanel();
+    this.initColPanel();
 
 
 };
@@ -97,7 +97,7 @@ GridHelper.prototype.markColumns = function () {
 // Add InfoPanel to all Columns
 // ======================
 
-GridHelper.prototype.addInfoPanel = function () {
+GridHelper.prototype.addColPanel = function () {
 
     var all_col = $(".ghb-col");
     var info_panel = "<div class='ghb-infopanel'>"
@@ -116,8 +116,9 @@ GridHelper.prototype.addInfoPanel = function () {
 // but must store manualy changes values
 // ======================
 
-GridHelper.prototype.initInfoPanelCol = function () {
+GridHelper.prototype.initColPanel = function () {
     this.resetInfoPanelCol();
+
 
     // find all divs with current viewport
     var regex = new RegExp("col-" + this.viewport + "-([0-9+]{1,2})");
@@ -130,15 +131,19 @@ GridHelper.prototype.initInfoPanelCol = function () {
 
     $.each(all_cols_with_viewport, function () {
 
-        var class_names = (" " + $(this).attr('class') + " ").match(regex);
-        if (class_names) {
-            var col_number = parseInt(class_names[1], 10);
+        var class_name = (" " + $(this).attr('class') + " ").match(regex);
+        if (class_name) {
+            var col_number = parseInt(class_name[1], 10);
+            var elem = $(this).children().children('.ghb-info-col').html(col_number);
+            elem.html(col_number);
+            gridhelper.addInputs(elem, col_number, false);
+        }
+        else{
+            console.log("leer");
         }
 
 
-        var elem = $(this).children().children('.ghb-info-col').html(col_number);
-        elem.html(col_number);
-        gridhelper.addInputs(elem, col_number);
+
 
     });
 
@@ -148,7 +153,7 @@ GridHelper.prototype.initInfoPanelCol = function () {
         return ((" " + this.className + " ").match(regex_offset) != null);
     });
 
-    $.each(all_cols_with_viewport, function () {
+    $.each(all_cols_with_viewport_offset, function () {
 
         var class_names = (" " + $(this).attr('class') + " ").match(regex_offset);
         if (class_names) {
@@ -163,9 +168,9 @@ GridHelper.prototype.initInfoPanelCol = function () {
         ;
 
 
-        var elem = $(this).children().children('.ghb-info-offset').html(col_number);
-        elem.html(col_number);
-        gridhelper.addInputs(elem, col_number);
+        var elem_offset = $(this).children().children('.ghb-info-offset').html(col_number);
+        elem_offset.html(col_number);
+        gridhelper.addInputs(elem_offset, col_number, true);
 
     });
 
@@ -178,17 +183,28 @@ GridHelper.prototype.initInfoPanelCol = function () {
 
 GridHelper.prototype.resetInfoPanelCol = function () {
     $('.ghb-info-col').html(0);
+    $('.ghb-info-offset').html(0);
+
+
+    $('.ghb-info-col').each(function() {
+        gridhelper.addInputs($(this), 0, false);
+    });
+
+    $('.ghb-info-offset').each(function() {
+        gridhelper.addInputs($(this), 0, true);
+    });
+
 }
 
 
 // init Input:selects on InfoPanel
 // ======================
 
-GridHelper.prototype.addInputs = function (elem, col_number) {
+GridHelper.prototype.addInputs = function (elem, col_number, offset) {
 
     var randomnumber = Math.floor((Math.random() * 10000) + 1);
     var id = "input_" + randomnumber;
-    var input_select = this.inputElemSelect('ghb-select', col_number, id, false);
+    var input_select = this.inputElemSelect('ghb-select', col_number, id, offset);
 
     elem.html(input_select);
     
@@ -198,16 +214,14 @@ GridHelper.prototype.addInputs = function (elem, col_number) {
 // inputElemSelect
 // ======================
 
-GridHelper.prototype.inputElemSelect = function (c, s, id, offset) {
+GridHelper.prototype.inputElemSelect = function (class_name, col_number, id, offset) {
     var html = null;
     var selected = null;
-    if (offset) {
-        c = c + "-offset"
-    }
-    html = "<select onchange = changeColNumber('" + id + "') class='" + c + "' id='" + id + "'>";
+
+    html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + offset + ") class='" + class_name + "' id='" + id + "'>";
 
     for (var i = 0; i <= 12; i++) {
-        if (s == i) {
+        if (col_number == i) {
             selected = "selected";
         }
         else {
@@ -221,43 +235,32 @@ GridHelper.prototype.inputElemSelect = function (c, s, id, offset) {
 }
 
 
-// OLD CODE
+
+
+// inputElemSelect
 // ======================
 
+GridHelper.prototype.updateColNumber = function ( id, offset) {
 
+    if(true === offset){ offset = "offset-"} else{ offset = ""}
 
-
-function changeColNumber(id) {
     var elem = $("#" + id);
-    var nummer = elem.val();
+    var col_number = elem.val();
+    var newClass = "col-" + this.viewport + "-" + offset + col_number;
 
-    console.log('changeColNumber');
-
-    console.log(id);
-
-
-    var colstatus = $(elem).parent().attr('data-col');
-
-    console.log("colstatus=" + colstatus);
-
-
-    var oldClass = $(elem).parent().attr('data-old');
-
-    var newClass = "col-" + colstatus + "-" + nummer;
-
-
-    console.log("oldClass=" + oldClass);
+    console.log("elem_id= " + id);
+    console.log("viewport= " + this.viewport);
     console.log("newClass=" + newClass);
 
-    $(elem).parent().parent().addClass(newClass);
-    $(elem).parent().data('data-old', newClass);
-    $(elem).parent().parent().removeClass(oldClass);
-
-
-    $(elem).parents.parent().removeClass(function (i, c) {
-        var m = c.match(/col{0,12}/);
+    $(elem).parent().parent().parent().removeClass(function (i, c) {
+        var regex = new RegExp("col-" + gridhelper.viewport + "-" + offset + "[0-9+]{1,2}");
+        var m = c.match(regex);
+        console.log("oldClass = "+ m);
         return m ? m[0] : m
     })
+
+    $(elem).parent().parent().parent().addClass(newClass);
+
 
 
 }
@@ -293,9 +296,8 @@ $(document).ready(function () {
 });
 
 $(window).resize(function () {
-    // showColInfos();
-    activateChanger();
+
     gridhelper.viewPort();
-    gridhelper.initInfoPanelCol();
+    gridhelper.initColPanel();
 
 });
