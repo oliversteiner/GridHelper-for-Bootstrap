@@ -1,7 +1,6 @@
 #gridhelper-monitor {
     top: 0;
-    left: 0;
-    display: block;
+    display: inline-block;
     position: fixed;
     z-index: 3000;
     border: solid #0d093a 1px;
@@ -11,15 +10,38 @@
     text-align: center;
     border-radius: 0 0 12px 0;
 
+
+
+}
+#gridhelper-monitor.left{
+    left: 0;
+    border-radius: 0 0 12px 0;
+
+}
+
+#gridhelper-monitor.right{
+    right: 0;
+    border-radius: 0 0 0 12px;
+
+}
+
+#gridhelper-monitor.center{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    border-radius:  0 0 12px 12px ;
+
 }
 
 #gridhelper-monitor a {
-    font-size: 12px;
-
     position: relative;
     color: #0078ff;
     margin: 0;
     padding: 0;
+}
+#gridhelper-onoff-text{
+ padding-right: 5px;
 }
 
 #gridhelper-monitor a:hover {
@@ -54,11 +76,10 @@
     border-right: solid rgba(0, 0, 0, 0.8) 1px;
     border-bottom: solid rgba(0, 0, 0, 0.8) 1px;
     border-radius: 0 0 8px 0;
+    z-index: +1;
 }
 
 
-/*Verschachtelte cols*/
-.ghb-infopanel
 
 
 .ghb-infopanel:hover {
@@ -69,6 +90,14 @@
     display: inline-block;
     margin-right: 5px;
 }
+
+/*nested cols*/
+.row .row .ghb-infopanel{
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+
+}
+
 
 .inseldebug:hover,
 .gridhelper-col-container-click:hover,
@@ -117,7 +146,7 @@
     -webkit-appearance: none;
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
-    padding: 0px 5px 0px 12px;
+    padding: 0 5px 0 12px;
     margin: 1px;
     border: none;
     text-align: center;
@@ -141,6 +170,7 @@
     word-spacing: 200px;
     font-family: monospace;
     font-weight: 300;
+
 }
 
 /* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */

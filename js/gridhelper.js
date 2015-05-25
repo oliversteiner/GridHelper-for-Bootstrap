@@ -4,13 +4,41 @@
  * Licensed under MIT (https://github.com/twbs/GridHelper_for_bootstrap/blob/master/LICENSE)
  */
 
+
+
+// GridHelper Options
+// ======================
+
+var gh_opt = {
+    start: 'auto',     // auto | click | silent (to start typ in console: 'gridhelper.start()' )
+    position: 'center'     // left | center | right
+};
+
+
+// Init Class
+// ======================
+$(document).ready(function () {
+    gridhelper = new GridHelper(gh_opt);
+    gridhelper.init();
+});
+
+// update the information on resizing
+$(window).resize(function () {
+    gridhelper.viewPort();
+    gridhelper.initColPanel();
+});
+
+
 // GridHelper CLASS DEFINITION
 // ======================
 
-function GridHelper() {
+function GridHelper(options) {
     this.viewport = 0;
     this.on = 0;
+    this.on_silent = 0;
     this.on_popover = 0;
+    this.options = options;
+
 }
 
 
@@ -26,6 +54,29 @@ GridHelper.prototype.init = function () {
     this.initColPanel();
 
     this.on = true;
+
+
+    $('#gridhelper-onoff-button').click(function () {
+        gridhelper.toggle();
+    });
+
+    $('#gridhelper-popover-button').click(function () {
+        gridhelper.toggleAllPopovers();
+    });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+
+
+    // Start Options
+    if (this.options.start == 'click') {
+        this.hide();
+    }
+    // to start typ in console: 'gridhelper.go()'
+    else if (this.options.start == 'silent') {
+        this.silent();
+    }
 
 };
 
@@ -184,26 +235,27 @@ GridHelper.prototype.initColPanelCode = function () {
     // foreach col take all classes and show on Panel
     $.each(all_col, function () {
 
-        var html = '<a tabindex="" role="button" class="btn-small"  onclick="gridhelper.showPopover(this)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'
+        var html = '<a tabindex="" role="button" class="btn-small"  onclick="gridhelper.showPopover(this, false)"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a>'
             + '<div ></div>';
         $(this).children().children('.ghb-info-code').html(html);
 
     })
 
 
-}
+};
 
 // show computed classes
 // ======================
 
 GridHelper.prototype.showPopover = function (elem, direct) {
 
-    console.log(elem);
+    //  console.log(elem);
+    var all_class_names = null;
 
     if (false == direct) {
-        var all_class_names = $(elem).parent().parent().parent().attr("class");
+         all_class_names = $(elem).parent().parent().parent().attr("class");
     } else {
-        var all_class_names = $(direct).attr("class");
+         all_class_names = $(direct).attr("class");
     }
 
     // console.log(all_class_names);
@@ -224,7 +276,7 @@ GridHelper.prototype.showPopover = function (elem, direct) {
     //  all_class_names = all_class_names.replace('\,', '');
     str.trim();
 
-    console.log(str);
+    // console.log(str);
     all_class_names = str;
 
     // console.log(all_class_names);
@@ -237,7 +289,7 @@ GridHelper.prototype.showPopover = function (elem, direct) {
         trigger: 'focus',
         content: all_class_names,
         template: template
-    }
+    };
 
     $(elem).popover(options);
     $(elem).popover('toggle');
@@ -251,9 +303,6 @@ GridHelper.prototype.showPopover = function (elem, direct) {
 // ======================
 
 GridHelper.prototype.resetInfoPanelCol = function () {
-    $('.ghb-info-col').html(0);
-    $('.ghb-info-offset').html(0);
-
 
     $('.ghb-info-col').each(function () {
         gridhelper.addInputs($(this), 0, false);
@@ -284,10 +333,9 @@ GridHelper.prototype.addInputs = function (elem, col_number, offset) {
 // ======================
 
 GridHelper.prototype.inputElemSelect = function (class_name, col_number, id, offset) {
-    var html = null;
     var selected = null;
 
-    html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + offset + ") class='" + class_name + "' id='" + id + "'>";
+    var html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + offset + ") class='" + class_name + "' id='" + id + "'>";
 
     for (var i = 0; i <= 12; i++) {
         if (col_number == i) {
@@ -342,32 +390,32 @@ GridHelper.prototype.hideAllPopovers = function () {
     $('.ghb-popover').popover('hide');
     this.on_popover = false;
 
-}
+};
 
 // show Popovers
 // ======================
 
 GridHelper.prototype.showAllPopovers = function () {
-    console.log('showAllPopovers');
+    //  console.log('showAllPopovers');
 
     var all_col = $("[class*=col-]");
 
     // foreach col take all classes and show on Panel
     $.each(all_col, function () {
-        console.log(this);
+        //  console.log(this);
 
         var elem = $(this);
-        console.log(elem);
+        // console.log(elem);
 
         var trigger = $(elem).children().children('.ghb-info-code');
 
-        gridhelper.showPopover(trigger,elem);
+        gridhelper.showPopover(trigger, elem);
 
-    })
+    });
 
     this.on_popover = true;
 
-}
+};
 
 // Toggle Popovers
 // ======================
@@ -380,8 +428,28 @@ GridHelper.prototype.toggleAllPopovers = function () {
     } else if (this.on_popover == false) {
         this.showAllPopovers();
     }
-}
+};
 
+
+// hide
+// ======================
+
+GridHelper.prototype.silent = function () {
+    this.hide();
+    $('#gridhelper-monitor').hide();
+
+    this.on_silent = true;
+};
+
+// up
+// ======================
+
+GridHelper.prototype.up = function () {
+    $('#gridhelper-monitor').show();
+    this.hide();
+
+    this.on_silent = false;
+};
 
 // hide
 // ======================
@@ -393,11 +461,14 @@ GridHelper.prototype.hide = function () {
     var all_panels = $(".ghb-infopanel");
     all_panels.hide();
     $('#responsive-status').hide();
+    $('#gridhelper-onoff-button-bottom').show();
+    $('#gridhelper-onoff-button-top').hide();
+    $('#gridhelper-onoff-text').hide();
     $('#gridhelper-popover-button').hide();
 
 
     this.on = false;
-}
+};
 
 // show
 // ======================
@@ -409,10 +480,13 @@ GridHelper.prototype.show = function () {
 
     all_panels.show();
     $('#responsive-status').show();
+    $('#gridhelper-onoff-button-bottom').hide();
+    $('#gridhelper-onoff-button-top').show();
     $('#gridhelper-popover-button').show();
+    $('#gridhelper-onoff-text').show();
 
     this.on = true;
-}
+};
 
 
 // toggle
@@ -433,45 +507,24 @@ GridHelper.prototype.toggle = function () {
 // ======================
 
 GridHelper.prototype.addGripHelperMonitor = function () {
-    var html = "<div id='gridhelper-monitor'>"
-        + "<a id='gridhelper-onoff-button'class='btn'>GridHelper</a>"
+
+    // adjust the position depending on the options
+
+
+    var html = "<div id='gridhelper-monitor' class='" + this.options.position + "'>"
+        + "<a id='gridhelper-onoff-button'class='btn'>"
+        + "<span id='gridhelper-onoff-text'>GridHelper</span>"
+        + "<span id='gridhelper-onoff-button-top' class='glyphicon glyphicon-triangle-top' aria-hidden='true'></span>"
+        + "<span id='gridhelper-onoff-button-bottom' class='btn-lg glyphicon glyphicon-triangle-bottom' aria-hidden='true' style='display: none'></span>"
+        + "</a>"
         + "<div id='responsive-status'></div>"
-        + "<a id='gridhelper-popover-button'class='btn'>Popover</a>"
+        + "<a id='gridhelper-popover-button'class='btn'>Classes</a>"
         + "</div>";
 
 
     $('body').append(html);
 
 };
-
-
-// Init Class
-// ======================
-
-
-$(document).ready(function () {
-
-    gridhelper = new GridHelper();
-    gridhelper.init();
-
-    $('#gridhelper-onoff-button').click(function () {
-        gridhelper.toggle();
-    })
-
-    $('#gridhelper-popover-button').click(function () {
-        gridhelper.toggleAllPopovers();
-    })
-
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-});
-
-$(window).resize(function () {
-    gridhelper.viewPort();
-    gridhelper.initColPanel();
-
-});
 
 
 // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
@@ -496,3 +549,9 @@ Object.defineProperty(Array.prototype, "removeItem", {
         return removeCounter;
     }
 });
+
+
+
+
+
+
