@@ -56,6 +56,11 @@
     border-radius: 0 0 8px 0;
 }
 
+
+/*Verschachtelte cols*/
+.ghb-infopanel
+
+
 .ghb-infopanel:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }

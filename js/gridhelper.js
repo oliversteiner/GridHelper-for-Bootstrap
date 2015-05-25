@@ -106,7 +106,6 @@ GridHelper.prototype.addColPanel = function () {
         + "<div class='ghb-info-offset'>0</div>"
         + "<div class='ghb-info-hide'></div>"
         + "<div class='ghb-info-code'>CODE</div>"
-        + "<div class='ghb-info-code-content'></div>"
         + "</div>";
 
     all_col.prepend(info_panel);
@@ -215,7 +214,7 @@ GridHelper.prototype.showPopover = function (elem, direct) {
     arr.sort();
     str = arr.join(' ');
 
-    // TODO Sort the Array with
+    // TODO Sort the Array
     // col-xs-*
     // col-sm-*
     // col-md-*
@@ -394,6 +393,8 @@ GridHelper.prototype.hide = function () {
     var all_panels = $(".ghb-infopanel");
     all_panels.hide();
     $('#responsive-status').hide();
+    $('#gridhelper-popover-button').hide();
+
 
     this.on = false;
 }
@@ -408,6 +409,8 @@ GridHelper.prototype.show = function () {
 
     all_panels.show();
     $('#responsive-status').show();
+    $('#gridhelper-popover-button').show();
+
     this.on = true;
 }
 
