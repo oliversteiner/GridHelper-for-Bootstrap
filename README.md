@@ -63,20 +63,3 @@ Released under the MIT license.
 
 ## Credits
 Many Thanks to http://stackoverflow.com/
-
-
-# Deutsche Anleitung
----
-###Installation
-
-## Start-Optionen
-###  start:  auto | click | silent 
- * auto	-	automatisch alle Panels aktivieren.
- * click -	nur den "Einblenden-Knopf" angezeigen. 
- * silent -	Script unsichtbar. Zum aktivieren in der Console eingeben: `gridhelper.go()`
-
-### position:  left | center | right
- * Position des "Einblenden-Knopfs"
-
-### popover_trigger:  click | hover | focus | manual.
- * Wie das PopOver mit den classennamen  ausgelöst wird 
