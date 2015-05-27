@@ -140,6 +140,10 @@
 .ghb-info-offset select,
 .ghb-info-col select {
     -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    appearance: none;
+
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
     padding: 0 5px 0 12px;

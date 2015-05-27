@@ -9,8 +9,8 @@
 // GridHelper Options
 // ======================
 
-var gh_opt = {
-    start: 'auto',     // auto | click | silent (to start typ in console: 'gridhelper.start()' )
+var options = {
+    start: 'auto',     // auto | click | silent
     position: 'center',     // left | center | right
     popover_trigger: 'click'  // click | hover | focus | manual.
 };
@@ -19,7 +19,7 @@ var gh_opt = {
 // Init Class
 // ======================
 $(document).ready(function () {
-    gridhelper = new GridHelper(gh_opt);
+    gridhelper = new GridHelper(options);
     gridhelper.init();
 });
 
@@ -501,10 +501,10 @@ GridHelper.prototype.silent = function () {
     this.on_silent = true;
 };
 
-// up
+// go
 // ======================
 
-GridHelper.prototype.up = function () {
+GridHelper.prototype.go = function () {
     $('#gridhelper-monitor').show();
     this.hide();
 
