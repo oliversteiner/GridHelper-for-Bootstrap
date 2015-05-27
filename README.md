@@ -1,6 +1,5 @@
 # GridHelper for Bootstrap
 
-## Demo
 [DEMO](http://mollo.ch/projects/gridhelper/)
 
 ## Description
