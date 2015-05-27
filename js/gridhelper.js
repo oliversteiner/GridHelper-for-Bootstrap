@@ -150,7 +150,9 @@ GridHelper.prototype.viewPort = function () {
 
 GridHelper.prototype.markColumns = function () {
 
-    var all_col = $("[class*=col-]");
+    // var all_col = $("[class*=col-]");
+    var all_col = $(".row").children();
+
     all_col.addClass('ghb-col'); // GridHelperBootstrap-column
 };
 
@@ -171,10 +173,12 @@ GridHelper.prototype.addColPanel = function () {
         var id = random_number;
 
         var info_panel = "<div class='ghb-infopanel' id='" + id + "'>"
-            + "<div class='ghb-info-col'>0</div>"
-            + "<div class='ghb-info-offset'>0</div>"
+            + "<div class='ghb-info-col'></div>"
+            + "<div class='ghb-info-offset'></div>"
+            + "<div class='ghb-info-push'></div>"
+            + "<div class='ghb-info-pull'></div>"
             + "<div class='ghb-info-hide'></div>"
-            + "<div class='ghb-info-code'>CODE</div>"
+            + "<div class='ghb-info-code'></div>"
             + "</div>";
 
         // console.log(this);
@@ -205,8 +209,8 @@ GridHelper.prototype.addColPanel = function () {
 // ======================
 
 GridHelper.prototype.initColPanel = function () {
-    this.resetInfoPanelCol();
 
+    this.resetInfoPanelCol();
 
     // find all divs with current viewport
     var regex = new RegExp("col-" + this.viewport + "-([0-9+]{1,2})");
@@ -265,18 +269,18 @@ GridHelper.prototype.initColPanel = function () {
 
 // show computed classes
 // ======================
-GridHelper.prototype.getColNumber = function (id, offset) {
+GridHelper.prototype.getColNumber = function (id, modus) {
     var col_number = false;
 
     var elem = $(id).parent();
 
-    if (offset === "offset") {
-        offset = "-offset"
+    if (modus === "offset") {
+        modus = "-offset"
     } else {
-        offset = "";
+        modus = "";
     }
 
-    var regex = new RegExp("col-" + this.viewport + offset + "-([0-9+]{1,2})");
+    var regex = new RegExp("col-" + this.viewport + modus + "-([0-9+]{1,2})");
 
     var class_names = (" " + $(elem).attr('class') + " ").match(regex);
     if (class_names) {
@@ -385,11 +389,11 @@ GridHelper.prototype.resetInfoPanelCol = function () {
 // init Input:selects on InfoPanel
 // ======================
 
-GridHelper.prototype.addInputs = function (elem, offset, id) {
+GridHelper.prototype.addInputs = function (elem, modus, id) {
 
-    //  var id = "input_" + offset + "_" + id;
-    var input_select = this.inputElemSelect('ghb-select', id, offset);
-    var name = '.ghb-info-' + offset;
+    //  var id = "input_" + modus + "_" + id;
+    var input_select = this.inputElemSelect('ghb-select', id, modus);
+    var name = '.ghb-info-' + modus;
     console.log(name)
     elem.children(name).html(input_select);
 
@@ -399,11 +403,11 @@ GridHelper.prototype.addInputs = function (elem, offset, id) {
 // inputElemSelect
 // ======================
 
-GridHelper.prototype.inputElemSelect = function (id, offset) {
+GridHelper.prototype.inputElemSelect = function (id, modus) {
     var selected = null;
-    var col_number = this.getColNumber(id, offset);
+    var col_number = this.getColNumber(id, modus);
 
-    var html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + offset + ") class='ghb-select' id='" + id + "'>";
+    var html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + modus + ") class='ghb-select' id='" + id + "'>";
 
     for (var i = 0; i <= 12; i++) {
         if (col_number == i) {
@@ -423,19 +427,19 @@ GridHelper.prototype.inputElemSelect = function (id, offset) {
 // updateColNumber
 // ======================
 
-GridHelper.prototype.updateColNumber = function (id, offset) {
+GridHelper.prototype.updateColNumber = function (id, modus) {
 
-    if (offset == "offset") {
+    if (modus == "offset") {
         var off = "offset-"
     } else {
         off = ""
     }
 
-    var elem = $("#input_" + offset + "_" + id);
+    var elem = $("#input_" + modus + "_" + id);
     var col_number = elem.val()
 
 
-    var newClass = "col-" + this.viewport + "-" + offset + col_number;
+    var newClass = "col-" + this.viewport + "-" + modus + col_number;
 
     // console.log("elem_id= " + id);
     // console.log("viewport= " + this.viewport);
