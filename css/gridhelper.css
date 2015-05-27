@@ -10,38 +10,38 @@
     text-align: center;
     border-radius: 0 0 12px 0;
 
-
-
 }
-#gridhelper-monitor.left{
+
+#gridhelper-monitor.left {
     left: 0;
     border-radius: 0 0 12px 0;
 
 }
 
-#gridhelper-monitor.right{
+#gridhelper-monitor.right {
     right: 0;
     border-radius: 0 0 0 12px;
 
 }
 
-#gridhelper-monitor.center{
+#gridhelper-monitor.center {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
     -webkit-transform: translate(-50%, 0);
-    border-radius:  0 0 12px 12px ;
+    border-radius: 0 0 12px 12px;
 
 }
 
 #gridhelper-monitor a {
     position: relative;
-    color: #0078ff;
+    color: silver;
     margin: 0;
     padding: 0;
 }
-#gridhelper-onoff-text{
- padding-right: 5px;
+
+#gridhelper-onoff-text {
+    padding-right: 5px;
 }
 
 #gridhelper-monitor a:hover {
@@ -79,9 +79,6 @@
     z-index: +1;
 }
 
-
-
-
 .ghb-infopanel:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -92,12 +89,11 @@
 }
 
 /*nested cols*/
-.row .row .ghb-infopanel{
+.row .row .ghb-infopanel {
     margin-top: 20px;
     background-color: rgba(0, 0, 0, 0.3);
 
 }
-
 
 .inseldebug:hover,
 .gridhelper-col-container-click:hover,
@@ -154,20 +150,19 @@
 }
 
 .ghb-info-offset select:hover,
-.ghb-info-col select:hover{
+.ghb-info-col select:hover {
     color: #0078ff;
 }
 
-.ghb-popover.right > .arrow::after {
+.ghb-info-code > .popover.right > .arrow::after {
     border-right-color: rgba(0, 0, 0, 0.8);
 
 }
 
-.ghb-popover {
+.ghb-info-code > .popover {
     background-color: rgba(0, 0, 0, 0.9);
-    color: #4385d8;
+    color: white;
     min-width: 200px;
-    word-spacing: 200px;
     font-family: monospace;
     font-weight: 300;
 
@@ -188,11 +183,11 @@
 
 }
 
-/* Yellow
+/* BLUE
 Portrait tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
     div.row > div.ghb-col {
-        border: solid #ffc229 1px;
+        border: solid #676aff 1px;
     }
 
     #responsive-status:after {
@@ -214,11 +209,11 @@ Portrait tablets and small desktops */
 
 }
 
-/* BLUE
+/* Yellow
 Landscape phones and portrait tablets */
 @media (max-width: 767px) {
     div.row > div.ghb-col {
-        border: solid blue 1px;
+        border: solid #ffc229 1px;
     }
 
     #responsive-status:after {
@@ -238,3 +233,52 @@ Landscape phones and smaller */
         content: 'xxs';
     }
 }
+
+/* green
+     Large desktops and laptops */
+.lg {
+    color: #54805c;
+
+}
+
+.popover-list {
+    margin: 0;
+    padding: 0;
+}
+
+.popover-list li {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* Blue
+Portrait tablets and medium desktops */
+.md {
+    color: #0078ff;
+}
+
+/* RED
+Portrait tablets and small desktops */
+.sm {
+    color: #c56b70;
+
+}
+
+/* Yellow
+Landscape phones and portrait tablets */
+.xs {
+    color: #d4a222;
+
+}
+
+/* Magenta
+Landscape phones and smaller */
+.xxs {
+    color: magenta;
+
+}
+
+
