@@ -5,14 +5,11 @@ _Deutsch_
 [DEMO](http://mollo.ch/projects/gridhelper/)
 
 ## Beschreibung
-An visual help for developing the bootstrap grid system 
-
-## Download
-
+Mit Clicki-Bunti das Bootstrap Grid-System testen und ausprobieren.
 
 ## Installation
-Kopiere die css- und js-Verzeichnisse in deine Webseite.
-Verlinke das Script und das CSS im __HEAD__ bereich.
+Kopiere die css- und js-Verzeichnisse von deiner Webseite.
+Verlinke das Script und das CSS im __HEAD__ .
 
     <!-- GridHelper for Bootstrap -->
     <link rel="stylesheet" href="css/gridhelper.css">
