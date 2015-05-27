@@ -6,8 +6,8 @@ _Deutsch_
 Mit Clicki-Bunti das Bootstrap Grid-System testen und ausprobieren.
 
 ## Installation
-Kopiere die css- und js-Verzeichnisse von deiner Webseite.
-Verlinke das Script und das CSS im __HEAD__ .
+Kopiere das css- und js-Verzeichnis in deine Webseite.
+Verlinke das CSS und das Script im __HEAD__.
 
     <!-- GridHelper for Bootstrap -->
     <link rel="stylesheet" href="css/gridhelper.css">
@@ -20,7 +20,7 @@ Du kannst das Startverhalten des Scripts ändern, indem du die _optionen_ anpass
 __Das Script ist nur zum Entwicklen und Testen von Webseiten gedacht. Entferne es, wenn du mit der Webseite fertig bist.__
 
 
-## Options
+## Optionen
 Die Optionen findest du in der Datei _js/griphelper.js_.
 
 	var options = {
