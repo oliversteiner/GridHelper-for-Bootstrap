@@ -18,6 +18,7 @@
 
 }
 
+
 #gridhelper-monitor.right {
     right: 0;
     border-radius: 0 0 0 12px;
@@ -25,7 +26,7 @@
 }
 
 #gridhelper-monitor.center {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translate(-50%, 0);
     -webkit-transform: translate(-50%, 0);
@@ -50,6 +51,25 @@
     text-decoration: none;
 }
 
+#gridhelper-popover-button{
+    position: relative;
+    left: 6px;
+    top: -8px;
+
+}
+#gridhelper-popover-picto{
+    color: #605c69;
+}
+
+#gridhelper-popover-picto.active{
+    color: #ffffff;
+}
+
+
+#gridhelper-popover-picto:hover{
+    color: #a6a6ae;
+}
+
 #responsive-status {
     font-size: 30px;
 }
@@ -66,7 +86,7 @@
 }
 
 /*Col Info Panel*/
-.ghb-infopanel {
+.row div.ghb-infopanel {
     position: absolute;
     left: 0;
     font-size: 12px;
@@ -77,6 +97,11 @@
     border-bottom: solid rgba(0, 0, 0, 0.8) 1px;
     border-radius: 0 0 8px 0;
     z-index: +1;
+}
+
+/* TODO this cold be evil: */
+.row > div{
+    position: relative;
 }
 
 .ghb-infopanel:hover {
@@ -137,25 +162,29 @@
 
 }
 
-.ghb-info-offset select,
-.ghb-info-col select {
+
+.ghb-select  select {
     -webkit-appearance: none;
     -moz-appearance: none;
-    -ms-progress-appearance: none;
+    -ms-progress-appearance: bar;
     appearance: none;
-
-    background-color: rgba(0, 0, 0, 0.2);
+background-color: transparent;
     color: white;
-    padding: 0 5px 0 12px;
-    margin: 1px;
+    padding: 0 0 0 0 ;
+    margin: 2px;
     border: none;
-    text-align: center;
+    text-align: right;
     cursor: pointer;
 }
 
-.ghb-info-offset select:hover,
-.ghb-info-col select:hover {
+
+
+
+
+.ghb-select  select:hover {
     color: #0078ff;
+    background-color: rgba(0, 0, 0, 0.5);
+
 }
 
 .ghb-info-code > .popover.right > .arrow::after {
@@ -170,6 +199,16 @@
     font-family: monospace;
     font-weight: 300;
 
+}
+.ghb-info-offset,
+.ghb-info-pull{
+    border-right: solid rgba(0, 0, 0, 0.3) 1px;
+}
+
+.ghb-info-push  select,
+.ghb-info-pull  select
+{
+    color: #989898;
 }
 
 /* Thanks to http://www.xurei-design.be/blog/2013/10/how-to-accurately-detect-responsive-breakpoints/ */

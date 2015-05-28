@@ -27,9 +27,47 @@
     <!--CSS for DEMO site-->
     <style>
         [class*=block-] {
-            background-color: grey;
+            background-color: #aec3e5;
             height: 100px;
             margin: 10px;
+            text-align: center;
+            position: relative;
+            font-size: 40px;
+            color: #6b7eaa;
+            font-family: monospace;
+            padding-top: 15px;
+
+        }
+
+        [class*=block-] small {
+            font-size: 20px;
+
+        }
+
+        #logo img{
+            float: left;
+            margin-right: 20px;
+        }
+
+        #logo h1{
+            position: relative;
+            top: 10px;
+            font-size: 40px;
+        }
+
+        #logo small{
+            position: relative;
+            top: -15px;
+            left: 5px;
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        h2{
+            color: gray;
+        }
+        .jumbotron{
+            padding-top: 70px;
         }
     </style>
 
@@ -60,11 +98,12 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <h1>GridHelper <br>
-            <small>for Bootstramp</small>
-        </h1>
+        <div id="logo"><img src="http://www.mollo.ch/projects/gridhelper/images/icon/gridhelper-gh-icon-100px.png">
 
-        <p><a class="btn btn-primary btn" href="#" role="button">show on GitHub</a></p>
+            <h1>GridHelper
+                <small><br>for Bootstramp</small>
+            </h1>
+        </div>
     </div>
 </div>
 
@@ -99,16 +138,16 @@
     <div class="container">
         <!-- Example row of columns with offset -->
         <div class="row">
-            <div class="">
+            <div class="col-md-3">
                 <div class="block-a1">A1</div>
             </div>
-            <div class="">
+            <div class="col-md-3">
                 <div class="block-a2">A2</div>
             </div>
-            <div class="some-other-class">
-                <div class="block-a3">A3</div>
+            <div class="col-md-3 some-other-class">
+                <div class="block-a3 ">A3</div>
             </div>
-            <div class="">
+            <div class="col-md-3">
                 <div class="block-a4">A4</div>
             </div>
         </div>
@@ -121,10 +160,14 @@
                     <div class="row">
 
                         <div class="">
-                            <div class="block-b1">B1</div>
+                            <div class="block-b1">B1
+                                <small>nested</small>
+                            </div>
                         </div>
                         <div class="">
-                            <div class="block-b2">B2</div>
+                            <div class="block-b2">B2
+                                <small>nested</small>
+                            </div>
 
                         </div>
                     </div>
@@ -134,10 +177,14 @@
                     <div class="row">
 
                         <div class="">
-                            <div class="block-b3">C1</div>
+                            <div class="block-b3">C1
+                                <small>nested</small>
+                            </div>
                         </div>
                         <div class="">
-                            <div class="block-b3">C2</div>
+                            <div class="block-b3">C2
+                                <small>nested</small>
+                            </div>
 
                         </div>
                     </div>
@@ -153,11 +200,14 @@
             <p>&copy; Oliver Steiner 2015</p>
         </footer>
     </div>
+</div>
+<div class="container">
     <!-- /container -->
     <script>
 
 
     </script>
 
+</div>
 </body>
 </html>
