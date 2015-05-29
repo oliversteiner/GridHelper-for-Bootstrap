@@ -4,8 +4,6 @@
  * Licensed under MIT (https://github.com/twbs/GridHelper_for_bootstrap/blob/master/LICENSE)
  */
 
-
-
 // GridHelper Options
 // ======================
 
@@ -14,7 +12,6 @@ var options = {
     position: 'center',     // left | center | right
     popover_trigger: 'click'  // click | hover | focus | manual.
 };
-
 
 // Init Class
 // ======================
@@ -39,7 +36,7 @@ function GridHelper(options) {
     this.on_silent = 0;
     this.on_popover = 0;
     this.options = options;
-
+    this.modus = "col";
 }
 
 
@@ -267,6 +264,7 @@ GridHelper.prototype.initColPanel = function () {
 
 };
 
+
 // show computed classes
 // ======================
 GridHelper.prototype.getColNumber = function (id, modus) {
@@ -292,10 +290,10 @@ GridHelper.prototype.getColNumber = function (id, modus) {
     var elem = $("#" + id).parent();
     var all_names = elem.attr('class');
 
-  //  console.log(all_names);
+    //  console.log(all_names);
 
     var regex = new RegExp("col-" + this.viewport + mod + "-([0-9+]{1,2})");
-   // console.log(regex);
+    // console.log(regex);
 
 
     var class_names = (" " + all_names + " ").match(regex);
@@ -310,8 +308,8 @@ GridHelper.prototype.getColNumber = function (id, modus) {
         col_number = 0;
     }
 
-   // console.log(col_number);
-   // console.log('--');
+    // console.log(col_number);
+    // console.log('--');
 
     return col_number;
 
@@ -323,23 +321,25 @@ GridHelper.prototype.getColNumber = function (id, modus) {
 
 GridHelper.prototype.addPopover = function (id) {
     var status;
-    console.log("addPopover " + id);
+    // console.log("addPopover " + id);
 
     if (id != null) {
 
         var all_class_names = this.getClassNames(id);
 
         var html = '<a tabindex="0" ' +
+            'id="#popover_' + id + '"' +
             'role="button" ' +
+            'onclick="gridhelper.updateClassNames(\''+ id +'\');" ' +
             'rel="gh-popover" ' +
             'class="btn-small"' +
             'data-toggle="popover" ' +
             'data-html="true" ' +
-            'data-contentwrapper="#popover_' + id + '"' +
+            'data-contentwrapper="#popover_data_' + id + '"' +
             'data-content="' +
             '">' +
             '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>' +
-            '</a><div style="display: none" id="popover_' + id + '">' +
+            '</a><div style="display: none" id="popover_data_' + id + '">' +
             all_class_names +
             '</div>';
 
@@ -356,6 +356,26 @@ GridHelper.prototype.addPopover = function (id) {
 
 };
 
+// show computed classes
+// ======================
+
+GridHelper.prototype.updateClassNames = function (id) {
+
+    var html = this.getClassNames(id);
+    $('#popover_data_' + id).html(html);
+
+
+}
+// show computed classes
+// ======================
+
+GridHelper.prototype.updatePopover = function (id) {
+
+    var html = this.getClassNames(id);
+    $('#' + id).children('.ghb-info-code').children().children().children().html(html);
+
+}
+
 
 // show computed classes
 // ======================
@@ -364,7 +384,7 @@ GridHelper.prototype.getClassNames = function (id) {
 
     var html_names = null;
 
-    var all_class_names = $("#"+id).parent().attr("class");
+    var all_class_names = $("#" + id).parent().attr("class");
 
     // console.log(all_class_names);
     // put all classes in array
@@ -438,9 +458,9 @@ GridHelper.prototype.inputElemSelect = function (id, modus) {
     var selected = "";
     var col_number = this.getColNumber(id, modus);
 
-    console.log("inputElemSelect - " + col_number + " - " + modus);
+    // console.log("inputElemSelect - " + col_number + " - " + modus);
 
-    var html = "<select onchange = gridhelper.updateColNumber('" + id + "'," + modus + ") class='ghb-select' id='" + id + "'>";
+    var html = "<select onchange = gridhelper.updateColNumber('" + id + "','" + modus + "') class='ghb-select' id='" + modus + "_" + id + "'>";
 
     for (var i = 0; i <= 12; i++) {
         if (col_number == i) {
@@ -461,51 +481,64 @@ GridHelper.prototype.inputElemSelect = function (id, modus) {
 // updateColNumber
 // ======================
 
-GridHelper.prototype.updateColNumber = function (id, modus) {
+GridHelper.prototype.updateColNumber = function (id, mod) {
 
-    var mod = "";
+    var modus = "";
 
-    switch (modus) {
-        case "offstet":
-            mod = "offset";
+    switch (mod) {
+        case "offset":
+            modus = "offset";
             break;
         case "pull":
-            mod = "-pull";
+            modus = "pull";
             break;
         case "push":
-            mod = "-push";
+            modus = "push";
             break;
         default :
-            mod = "";
+            modus = "col";
             break;
     }
 
-    var elem = $("#input_" + modus + "_" + id);
-    var col_number = elem.val()
+    var elem = $("#" + modus + "_" + id);
+    var root = $("#" + id).parent();
+    gridhelper.modus = modus;
+    if (modus == "col") {
+        gridhelper.modus = "";
+    }
 
+    // console.log("elem - " + "#" + modus + "_" + id);
+    // console.log("root - " + root);
 
-    var newClass = "col-" + this.viewport + "-" + modus + col_number;
+    var col_number = elem.val();
+    // console.log("elem - " + col_number);
 
-    // console.log("elem_id= " + id);
-    // console.log("viewport= " + this.viewport);
-    // console.log("newClass=" + newClass);
+    if (modus == "col") {
+        var newClass = "col-" + this.viewport + "-" + col_number;
+    } else {
+        var newClass = "col-" + this.viewport + "-" + modus + "-" + col_number;
 
-    $(elem).parent().parent().parent().removeClass(function (i, c) {
-        var regex = new RegExp("col-" + gridhelper.viewport + off + "-[0-9+]{1,2}");
-        var m = c.match(regex);
-        // console.log("oldClass = " + m);
+    }
+
+    //  console.log("newClass = " + newClass);
+    //  console.log("viewport = " + this.viewport);
+    //  console.log("root =" + root.attr('class'));
+
+    root.removeClass(function (index, css) {
+        // col-md-offset-4
+        var regex = new RegExp("col-" + gridhelper.viewport + "-" + gridhelper.modus + "[0-9+]{1,2}");
+        // console.log(regex);
+        var m = css.match(regex);
         return m ? m[0] : m
+        // console.log("oldClass = " + m);
+
     });
 
-    $(elem).parent().parent().parent().addClass(newClass);
+    root.addClass(newClass);
+    //  console.log("- - - -  - " );
 
 
-    // Update popover classnames
-    // TODO optimize this
-    var new_elem = $(elem).parent().parent().parent();
-    var new_class_names = this.getClassNames(new_elem);
-    // console.log(new_class_names);
-    // console.log(elem);
+    this.updatePopover(id);
 
 };
 
@@ -553,6 +586,7 @@ GridHelper.prototype.silent = function () {
     this.on_silent = true;
 };
 
+
 // go
 // ======================
 
@@ -581,6 +615,7 @@ GridHelper.prototype.hide = function () {
 
     this.on = false;
 };
+
 
 // show
 // ======================
@@ -640,14 +675,12 @@ GridHelper.prototype.addGripHelperMonitor = function () {
 };
 
 
-
-
 // addTootlip
 // ======================
 
 GridHelper.prototype.addToolTip = function () {
 
-    $(".tip-top").tooltip({placement: 'top',title:'test'});
+    $(".tip-top").tooltip({placement: 'top', title: 'test'});
 }
 
 
