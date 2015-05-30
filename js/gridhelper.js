@@ -10,7 +10,7 @@
 var options = {
     start: 'auto',     // auto | click | silent
     position: 'center',     // left | center | right
-    popover_trigger: 'click'  // click | hover | focus | manual.
+    popover_trigger: 'click'  // click | hover | focus | manual
 };
 
 // Init Class
