@@ -97,7 +97,6 @@ GridHelper.prototype.init = function () {
 GridHelper.prototype.viewPort = function () {
 
     var width = $(window).width();
-    //  console.log(width);
 
     if (width <= 480) {
         // XXS - violet
@@ -142,7 +141,6 @@ GridHelper.prototype.viewPort = function () {
 
     }
 
-    // console.log(this.viewport);
     $('#responsive-status').attr('class', this.viewport);
 
     return this.viewport;
@@ -247,16 +245,11 @@ GridHelper.prototype.getColNumber = function (id, modes) {
     var elem = $("#" + id).parent();
     var all_names = elem.attr('class');
 
-    //  console.log(all_names);
-
     var regex = new RegExp("col-" + this.viewport + mod + "-([0-9+]{1,2})");
-    // console.log(regex);
-
 
     var class_names = (" " + all_names + " ").match(regex);
 
     if (class_names) {
-        //console.log(class_names[1]);
         col_number = parseInt(class_names[1], 10);
     }
 
@@ -265,7 +258,6 @@ GridHelper.prototype.getColNumber = function (id, modes) {
     }
 
     return col_number;
-
 };
 
 
@@ -274,7 +266,6 @@ GridHelper.prototype.getColNumber = function (id, modes) {
 
 GridHelper.prototype.addPopover = function (id) {
     var status;
-    // console.log("addPopover " + id);
 
     if (id != null) {
 
@@ -311,7 +302,6 @@ GridHelper.prototype.getClassNames = function (id) {
 
     var all_class_names = $("#" + id).parent().attr("class");
 
-    // console.log(all_class_names);
     // put all classes in array
     var str = all_class_names.trim();
     str = str.replace('ghb-col', '');
