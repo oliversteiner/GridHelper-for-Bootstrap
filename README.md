@@ -61,4 +61,5 @@ gridhelper has been tested with and supports the following browsers:
 Released under the MIT license.
 
 ## Credits
+ Coded by Oliver Steiner.
 Many Thanks to http://stackoverflow.com/
