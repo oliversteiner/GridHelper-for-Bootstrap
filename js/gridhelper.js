@@ -37,7 +37,7 @@ function GridHelper(options) {
     this.on_silent = 0;
     this.on_popover = 0;
     this.options = options;
-    this.modus = "col";
+    this.modes = "col";
     this.cols = 0;
 }
 
@@ -51,9 +51,7 @@ GridHelper.prototype.init = function () {
     this.viewPort();
     this.markColumns();
     this.addColPanel();
-
     this.on = true;
-
 
     $('#gridhelper-onoff-button').click(function () {
         gridhelper.toggle();
@@ -62,7 +60,6 @@ GridHelper.prototype.init = function () {
     $('#gridhelper-popover-button').click(function () {
         gridhelper.toggleAllPopovers();
     });
-
 
     // Start Options
     if (this.options.start == 'click') {
@@ -73,7 +70,7 @@ GridHelper.prototype.init = function () {
         this.silent();
     }
 
-    // Options and Init of Popover with Classnames
+    // Options and Init of Popover with classnames
     $('[rel=gh-popover]').popover({
         html: true,
         trigger: this.options.popover_trigger,
@@ -192,22 +189,22 @@ GridHelper.prototype.addColPanel = function () {
 };
 
 
-
+// Updates the Input-Elements of the InfoPanel
 // ======================
 
 GridHelper.prototype.updateColPanel = function () {
 
-    var allcols = gridhelper.cols;
+    var all_cols = gridhelper.cols;
 
-    for (i = 1; i < allcols; i++) {
+    for (var i = 1; i < all_cols; i++) {
 
         var id = "ghb-" + i;
 
         // add input Element Select
-        gridhelper.addInputs(id, 'col');
-        gridhelper.addInputs(id, 'offset');
-        gridhelper.addInputs(id, 'push');
-        gridhelper.addInputs(id, 'pull');
+        gridhelper.addInput(id, 'col');
+        gridhelper.addInput(id, 'offset');
+        gridhelper.addInput(id, 'push');
+        gridhelper.addInput(id, 'pull');
 
     }
 };
@@ -216,12 +213,12 @@ GridHelper.prototype.updateColPanel = function () {
 // show computed classes
 // ======================
 
-GridHelper.prototype.getColNumber = function (id, modus) {
+GridHelper.prototype.getColNumber = function (id, modes) {
     var col_number = "0";
 
     var mod = "";
 
-    switch (modus) {
+    switch (modes) {
         case "offset":
             mod = "-offset";
             break;
@@ -309,18 +306,6 @@ GridHelper.prototype.addPopover = function (id) {
 // show computed classes
 // ======================
 
-GridHelper.prototype.updateClassNames = function (id) {
-
-    var html = this.getClassNames(id);
-    $('#popover_data_' + id).html(html);
-
-
-};
-
-
-// show computed classes
-// ======================
-
 GridHelper.prototype.getClassNames = function (id) {
 
     var html_names = null;
@@ -363,21 +348,22 @@ GridHelper.prototype.getClassNames = function (id) {
 
 };
 
+
 // show computed classes
 // ======================
 
-GridHelper.prototype.removeClassNames = function (id, modus) {
+GridHelper.prototype.removeClassNames = function (id, modes) {
 
-    if (modus == "col") {
-        modus = ""
+    if (modes == "col") {
+        modes = ""
     } else {
-        modus = modus + "-"
+        modes = modes + "-"
     }
 
     var class_name = '';
     var root = $("#" + id).parent();
 
-    var regex = new RegExp("col-" + gridhelper.viewport + "-" + modus + "[0-9+]{1,2}");
+    var regex = new RegExp("col-" + gridhelper.viewport + "-" + modes + "[0-9+]{1,2}");
     var search_for_class = new RegExp(regex);
 
     var classes = root.attr("class").split(' ');
@@ -395,29 +381,13 @@ GridHelper.prototype.removeClassNames = function (id, modus) {
 };
 
 
-// reset InfoPanel Col
-// ======================
-
-GridHelper.prototype.resetInfoPanelCol = function () {
-
-    $('.ghb-infopanel').each(function () {
-        var id = $(this).attr('id');
-
-        gridhelper.addInputs(id, 'col');
-        gridhelper.addInputs(id, 'offset');
-    });
-
-
-};
-
-
 // init Input:selects on InfoPanel
 // ======================
 
-GridHelper.prototype.addInputs = function (id, modus) {
+GridHelper.prototype.addInput = function (id, modes) {
 
-    var html = this.inputElemSelect(id, modus);
-    $("#" + id).children('.ghb-info-' + modus).html(html);
+    var html = this.inputElemSelect(id, modes);
+    $("#" + id).children('.ghb-info-' + modes).html(html);
 
 };
 
@@ -425,25 +395,29 @@ GridHelper.prototype.addInputs = function (id, modus) {
 // inputElemSelect
 // ======================
 
-GridHelper.prototype.inputElemSelect = function (id, modus) {
+GridHelper.prototype.inputElemSelect = function (id, modes) {
 
     var selected = "";
-    var col_number = this.getColNumber(id, modus);
+    var col_number = this.getColNumber(id, modes);
+    var html = "";
 
-    // console.log("inputElemSelect - " + col_number + " - " + modus);
+    if (this.viewport !== "xxs") {
 
-    var html = "<select onchange = gridhelper.updateColNumber('" + id + "','" + modus + "') class='ghb-select' id='" + modus + "_" + id + "'>";
+        // console.log("inputElemSelect - " + col_number + " - " + modes);
+        html = "<select onchange = gridhelper.updateColNumber('" + id + "','" + modes + "') class='ghb-select' id='" + modes + "_" + id + "'>";
 
-    for (var i = 0; i <= 12; i++) {
-        if (col_number == i) {
-            selected = "selected";
+        for (var i = 0; i <= 12; i++) {
+            if (col_number == i) {
+                selected = "selected";
+            }
+            else {
+                selected = "";
+            }
+            html = html + "<option " + selected + " value = '" + i + "'>" + i + "</option>";
         }
-        else {
-            selected = "";
-        }
-        html = html + "<option " + selected + " value = '" + i + "'>" + i + "</option>";
+        html = html + "</select>";
+
     }
-    html = html + "</select>";
 
     //  console.log(html);
     return html;
@@ -455,40 +429,40 @@ GridHelper.prototype.inputElemSelect = function (id, modus) {
 
 GridHelper.prototype.updateColNumber = function (id, mod) {
 
-    var modus = "";
+    var modes = "";
 
     switch (mod) {
         case "offset":
-            modus = "offset";
+            modes = "offset";
             break;
         case "pull":
-            modus = "pull";
+            modes = "pull";
             break;
         case "push":
-            modus = "push";
+            modes = "push";
             break;
         default :
-            modus = "col";
+            modes = "col";
             break;
     }
 
-    var elem = $("#" + modus + "_" + id);
+    var elem = $("#" + modes + "_" + id);
     var root = $("#" + id).parent();
-    gridhelper.modus = modus;
-    if (modus == "col") {
-        gridhelper.modus = "";
+    gridhelper.modes = modes;
+    if (modes == "col") {
+        gridhelper.modes = "";
     }
 
-    // console.log("elem - " + "#" + modus + "_" + id);
+    // console.log("elem - " + "#" + modes + "_" + id);
     // console.log("root - " + root);
 
     var col_number = elem.val();
     // console.log("elem - " + col_number);
 
-    if (modus == "col") {
+    if (modes == "col") {
         var newClass = "col-" + this.viewport + "-" + col_number;
     } else {
-        var newClass = "col-" + this.viewport + "-" + modus + "-" + col_number;
+        var newClass = "col-" + this.viewport + "-" + modes + "-" + col_number;
 
     }
 
@@ -496,7 +470,7 @@ GridHelper.prototype.updateColNumber = function (id, mod) {
     //  console.log("viewport = " + this.viewport);
     //  console.log("root =" + root.attr('class'));
 
-    this.removeClassNames(id, modus);
+    this.removeClassNames(id, modes);
 
     root.addClass(newClass);
     //  console.log("- - - -  - " );
@@ -504,6 +478,8 @@ GridHelper.prototype.updateColNumber = function (id, mod) {
 
 
 };
+
+
 // show computed classes
 // ======================
 
@@ -530,6 +506,7 @@ GridHelper.prototype.hideAllPopovers = function () {
     this.on_popover = false;
 };
 
+
 // show Popovers
 // ======================
 
@@ -539,6 +516,7 @@ GridHelper.prototype.showAllPopovers = function () {
     $('#gridhelper-popover-picto').addClass('active');
     this.on_popover = true;
 };
+
 
 // Toggle Popovers
 // ======================
@@ -574,6 +552,7 @@ GridHelper.prototype.go = function () {
     this.on_silent = false;
 };
 
+
 // hide
 // ======================
 
@@ -588,7 +567,6 @@ GridHelper.prototype.hide = function () {
     $('#gridhelper-onoff-button-top').hide();
     $('#gridhelper-onoff-text').hide();
     $('#gridhelper-popover-button').hide();
-
 
     this.on = false;
 };
@@ -647,21 +625,14 @@ GridHelper.prototype.addGripHelperMonitor = function () {
         + "</div>";
 
 
-    $('body').append(html);
+    $('body').append(html, false);
 
 };
 
 
-// addTootlip
-// ======================
-
-GridHelper.prototype.addToolTip = function () {
-
-    $(".tip-top").tooltip({placement: 'top', title: 'test'});
-};
-
-
+// Helper-Function for Array
 // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+// ======================
 Object.defineProperty(Array.prototype, "removeItem", {
     enumerable: false,
     value: function (itemToRemove) {
@@ -683,9 +654,3 @@ Object.defineProperty(Array.prototype, "removeItem", {
         return removeCounter;
     }
 });
-
-
-
-
-
-
