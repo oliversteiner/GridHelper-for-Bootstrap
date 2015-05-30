@@ -23,8 +23,7 @@ $(document).ready(function () {
 // update the information on resizing
 $(window).resize(function () {
     gridhelper.viewPort();
-    gridhelper.updateColPanel();
-
+    gridhelper.initColPanel();
 });
 
 
@@ -37,8 +36,7 @@ function GridHelper(options) {
     this.on_silent = 0;
     this.on_popover = 0;
     this.options = options;
-    this.modes = "col";
-    this.cols = 0;
+    this.modus = "col";
 }
 
 
@@ -51,7 +49,9 @@ GridHelper.prototype.init = function () {
     this.viewPort();
     this.markColumns();
     this.addColPanel();
+
     this.on = true;
+
 
     $('#gridhelper-onoff-button').click(function () {
         gridhelper.toggle();
@@ -60,6 +60,7 @@ GridHelper.prototype.init = function () {
     $('#gridhelper-popover-button').click(function () {
         gridhelper.toggleAllPopovers();
     });
+
 
     // Start Options
     if (this.options.start == 'click') {
@@ -70,10 +71,9 @@ GridHelper.prototype.init = function () {
         this.silent();
     }
 
-    // Options and Init of Popover with classnames
+    // Options and Init of Popover with Classnames
     $('[rel=gh-popover]').popover({
         html: true,
-        container: '',
         trigger: this.options.popover_trigger,
         placement: 'right',
         content: function () {
@@ -81,13 +81,6 @@ GridHelper.prototype.init = function () {
         }
     });
     $('[data-toggle="tooltip"]').tooltip();
-
-
-    $(".ghb-infopanel").hover(function () {
-        $(this).parent().children('.ghb-marc').addClass('ghb-marc-active');
-    }, function () {
-        $(this).parent().children('.ghb-marc').removeClass('ghb-marc-active');
-    });
 
 };
 
@@ -97,12 +90,14 @@ GridHelper.prototype.init = function () {
 GridHelper.prototype.viewPort = function () {
 
     var width = $(window).width();
+    //  console.log(width);
 
     if (width <= 480) {
         // XXS - violet
         // Landscape phones and smaller */
         // max-width: 480px
         this.viewport = 'xxs';
+        $('gridhelper-popover-button').addr('class', 'eas');
     }
 
 
@@ -141,11 +136,12 @@ GridHelper.prototype.viewPort = function () {
 
     }
 
+    // console.log(this.viewport);
     $('#responsive-status').attr('class', this.viewport);
 
     return this.viewport;
 
-};
+}
 
 
 // Mark Columns
@@ -171,13 +167,11 @@ GridHelper.prototype.addColPanel = function () {
     // foreach col take all classes and show on Panel
     $.each(all_col, function () {
 
-        var id = "ghb-" + gridhelper.cols;
+        // generate ID
+        var random_number = Math.floor((Math.random() * 10000) + 1);
+        var id = "bsh-" + random_number;
 
-        var info_panel = '<div class="ghb-marc" id="' + id + '-marc"></div>'
-            + '<div class="ghb-infopanel" id="' + id + '" '
-                //  + 'onmouseover="gridhelper.markColumn(\''+id+'\')"'
-                //  + 'mouseout="gridhelper.alert()"
-            + '>'
+        var info_panel = '<div class="ghb-infopanel" id="' + id + '">'
             + '<div class="ghb-select ghb-info-col" data-toggle="tooltip" data-placement="top" data-original-title="col"></div>'
             + '<div class="ghb-select ghb-info-offset" data-toggle="tooltip" data-placement="top" data-original-title="offset"></div>'
             + '<div class="ghb-select ghb-info-push" data-toggle="tooltip" data-placement="top" data-original-title="push"></div>'
@@ -186,49 +180,99 @@ GridHelper.prototype.addColPanel = function () {
             + '<div class="ghb-info-code"></div>'
             + '</div>';
 
+        // console.log(this);
         // add the infoPanel to each div.row >div
         $(this).prepend(info_panel);
-        // add the Popover who shows the ClassNames
+
+        // add inputselect
+        gridhelper.addInputs(id, 'col');
+        gridhelper.addInputs(id, 'offset');
+        gridhelper.addInputs(id, 'push');
+        gridhelper.addInputs(id, 'pull');
+
+        // add popover
         gridhelper.addPopover(id);
-        gridhelper.cols++;
+
+    })
 
 
-    });
-    // add all Input-elements
-    this.updateColPanel();
+    // add ID to infopanel
 };
 
 
-// Updates the Input-Elements of the InfoPanel
+// init InfoPanel Col
+// must be done for every change of Viewport
+// but must store manually changes values
 // ======================
 
-GridHelper.prototype.updateColPanel = function () {
+GridHelper.prototype.initColPanel = function () {
 
-    var all_cols = gridhelper.cols;
+    this.resetInfoPanelCol();
 
-    for (var i = 0; i < all_cols; i++) {
+    // find all divs with current viewport
+    var regex = new RegExp("col-" + this.viewport + "-([0-9+]{1,2})");
+    var regex_offset = new RegExp("col-" + this.viewport + "-offset-([0-9+]{1,2})");
 
-        var id = "ghb-" + i;
+    // col
+    var all_cols_with_viewport = $(".ghb-col").filter(function () {
+        return ((" " + this.className + " ").match(regex) != null);
+    });
 
-        // add input Element Select
-        gridhelper.addInput(id, 'col');
-        gridhelper.addInput(id, 'offset');
-        gridhelper.addInput(id, 'push');
-        gridhelper.addInput(id, 'pull');
+    $.each(all_cols_with_viewport, function () {
 
-    }
+        var class_name = (" " + $(this).attr('class') + " ").match(regex);
+        if (class_name) {
+            var col_number = parseInt(class_name[1], 10);
+            var elem = $(this).children().children('.ghb-info-col').html(col_number);
+
+            var id = $(this).children().first().attr('id');
+            // console.log(id);
+            elem.html(col_number);
+            gridhelper.addInputs(elem, col_number, 'col', id);
+        }
+
+
+    });
+
+
+    // col-offset
+    var all_cols_with_viewport_offset = $(".ghb-col").filter(function () {
+        return ((" " + this.className + " ").match(regex_offset) != null);
+    });
+
+    $.each(all_cols_with_viewport_offset, function () {
+
+        var class_names = (" " + $(this).attr('class') + " ").match(regex_offset);
+        if (class_names) {
+            var col_number = parseInt(class_names[1], 10);
+        }
+
+        //  console.log($(this).children().children());
+        //  console.log(col_number);
+        if (isNaN(col_number)) {
+            col_number = 0
+        }
+
+        var elem_offset = $(this).children().children('.ghb-info-offset').html(col_number);
+        elem_offset.html(col_number);
+
+        var id = $(this).children().first().attr('id');
+        //  gridhelper.addInputs(elem_offset, col_number, 'offset', id);
+
+    });
+
+
 };
 
 
 // show computed classes
 // ======================
-
-GridHelper.prototype.getColNumber = function (id, modes) {
+GridHelper.prototype.getColNumber = function (id, modus) {
     var col_number = "0";
 
     var mod = "";
 
-    switch (modes) {
+    switch (modus) {
         case "offset":
             mod = "-offset";
             break;
@@ -238,7 +282,7 @@ GridHelper.prototype.getColNumber = function (id, modes) {
         case "push":
             mod = "-push";
             break;
-        default :
+        default :/**/
             mod = "";
             break;
     }
@@ -246,20 +290,30 @@ GridHelper.prototype.getColNumber = function (id, modes) {
     var elem = $("#" + id).parent();
     var all_names = elem.attr('class');
 
+    //  console.log(all_names);
+
     var regex = new RegExp("col-" + this.viewport + mod + "-([0-9+]{1,2})");
+    // console.log(regex);
+
 
     var class_names = (" " + all_names + " ").match(regex);
 
     if (class_names) {
+        //console.log(class_names[1]);
         col_number = parseInt(class_names[1], 10);
+
     }
 
     if (isNaN(col_number)) {
         col_number = 0;
     }
 
+    // console.log(col_number);
+    // console.log('--');
+
     return col_number;
-};
+
+}
 
 
 // show computed classes
@@ -267,6 +321,7 @@ GridHelper.prototype.getColNumber = function (id, modes) {
 
 GridHelper.prototype.addPopover = function (id) {
     var status;
+    // console.log("addPopover " + id);
 
     if (id != null) {
 
@@ -275,7 +330,7 @@ GridHelper.prototype.addPopover = function (id) {
         var html = '<a tabindex="0" ' +
             'id="#popover_' + id + '"' +
             'role="button" ' +
-            'onclick="gridhelper.updatePopover(\'' + id + '\');" ' +
+            'onclick="gridhelper.updateClassNames(\''+ id +'\');" ' +
             'rel="gh-popover" ' +
             'class="btn-small"' +
             'data-toggle="popover" ' +
@@ -288,10 +343,41 @@ GridHelper.prototype.addPopover = function (id) {
             all_class_names +
             '</div>';
 
+
         $("#" + id).children('.ghb-info-code').html(html);
+
+        status = true;
+    }
+    else {
+        status = false
     }
 
+    return status;
+
 };
+
+// show computed classes
+// ======================
+
+GridHelper.prototype.updateClassNames = function (id) {
+
+    var html = this.getClassNames(id);
+    $('#popover_data_' + id).html(html);
+
+
+}
+
+// show computed classes
+// ======================
+
+GridHelper.prototype.updatePopover = function (id) {
+
+    var html = this.getClassNames(id);
+    $('#' + id).children('.ghb-info-').children().children().children().html("");
+    code
+    $('#' + id).children('.ghb-info-code').children().children().children().html(html);
+
+}
 
 
 // show computed classes
@@ -303,11 +389,20 @@ GridHelper.prototype.getClassNames = function (id) {
 
     var all_class_names = $("#" + id).parent().attr("class");
 
+    // console.log(all_class_names);
     // put all classes in array
     var str = all_class_names.trim();
     str = str.replace('ghb-col', '');
     var arr = str.split(' ');
     arr.sort();
+
+    // Sort the Array
+    // col-xs-*
+    // col-sm-*
+    // col-md-*
+    // col-lg-*
+    // others
+
 
     //  add viewport-color
     html_names = '<ul class="popover-list">';
@@ -327,47 +422,33 @@ GridHelper.prototype.getClassNames = function (id) {
     html_names += '</ul>';
 
     return html_names;
-};
+
+}
 
 
-// show computed classes
+// reset InfoPanel Col
 // ======================
 
-GridHelper.prototype.removeClassNames = function (id, modes) {
+GridHelper.prototype.resetInfoPanelCol = function () {
 
-    if (modes == "col") {
-        modes = ""
-    } else {
-        modes = modes + "-"
-    }
+    $('.ghb-infopanel').each(function () {
+        var id = $(this).attr('id');
 
-    var class_name = '';
-    var root = $("#" + id).parent();
+        gridhelper.addInputs(id, 'col');
+        gridhelper.addInputs(id, 'offset');
+    });
 
-    var regex = new RegExp("col-" + gridhelper.viewport + "-" + modes + "[0-9+]{1,2}");
-    var search_for_class = new RegExp(regex);
 
-    var classes = root.attr("class").split(' ');
-
-    for (var i = 0; i < classes.length; i++) {
-        if (classes[i].match(search_for_class)) {
-            class_name += classes[i] + ' ';
-        }
-    }
-
-    $(root).removeClass(class_name);
-
-    return class_name;
 };
 
 
 // init Input:selects on InfoPanel
 // ======================
 
-GridHelper.prototype.addInput = function (id, modes) {
+GridHelper.prototype.addInputs = function (id, modus) {
 
-    var html = this.inputElemSelect(id, modes);
-    $("#" + id).children('.ghb-info-' + modes).html(html);
+    var html = this.inputElemSelect(id, modus);
+    $("#" + id).children('.ghb-info-' + modus).html(html);
 
 };
 
@@ -375,29 +456,27 @@ GridHelper.prototype.addInput = function (id, modes) {
 // inputElemSelect
 // ======================
 
-GridHelper.prototype.inputElemSelect = function (id, modes) {
+GridHelper.prototype.inputElemSelect = function (id, modus) {
 
     var selected = "";
-    var col_number = this.getColNumber(id, modes);
-    var html = "";
+    var col_number = this.getColNumber(id, modus);
 
-    if (this.viewport !== "xxs") {
+    // console.log("inputElemSelect - " + col_number + " - " + modus);
 
-        html = "<select onchange = gridhelper.updateColNumber('" + id + "','" + modes + "') class='ghb-select' id='" + modes + "_" + id + "'>";
+    var html = "<select onchange = gridhelper.updateColNumber('" + id + "','" + modus + "') class='ghb-select' id='" + modus + "_" + id + "'>";
 
-        for (var i = 0; i <= 12; i++) {
-            if (col_number == i) {
-                selected = "selected";
-            }
-            else {
-                selected = "";
-            }
-            html = html + "<option " + selected + " value = '" + i + "'>" + i + "</option>";
+    for (var i = 0; i <= 12; i++) {
+        if (col_number == i) {
+            selected = "selected";
         }
-        html = html + "</select>";
-
+        else {
+            selected = "";
+        }
+        html = html + "<option " + selected + " value = '" + i + "'>" + i + "</option>";
     }
+    html = html + "</select>";
 
+    //  console.log(html);
     return html;
 };
 
@@ -405,43 +484,65 @@ GridHelper.prototype.inputElemSelect = function (id, modes) {
 // updateColNumber
 // ======================
 
-GridHelper.prototype.updateColNumber = function (id, modes) {
+GridHelper.prototype.updateColNumber = function (id, mod) {
 
-    var modes2 = "";
+    var modus = "";
 
-    var elem = $("#" + modes + "_" + id);
-
-    var root = $("#" + id).parent();
-
-    var col_number = elem.val();
-
-    if (modes == "col") {
-        modes2 = ""
-    } else {
-        modes2 = modes + "-"
+    switch (mod) {
+        case "offset":
+            modus = "offset";
+            break;
+        case "pull":
+            modus = "pull";
+            break;
+        case "push":
+            modus = "push";
+            break;
+        default :
+            modus = "col";
+            break;
     }
 
-    var newClass = "col-" + this.viewport + "-" + modes2 + col_number;
+    var elem = $("#" + modus + "_" + id);
+    var root = $("#" + id).parent();
+    gridhelper.modus = modus;
+    if (modus == "col") {
+        gridhelper.modus = "";
+    }
 
-    this.removeClassNames(id, modes);
+    // console.log("elem - " + "#" + modus + "_" + id);
+    // console.log("root - " + root);
+
+    var col_number = elem.val();
+    // console.log("elem - " + col_number);
+
+    if (modus == "col") {
+        var newClass = "col-" + this.viewport + "-" + col_number;
+    } else {
+        var newClass = "col-" + this.viewport + "-" + modus + "-" + col_number;
+
+    }
+
+    //  console.log("newClass = " + newClass);
+    //  console.log("viewport = " + this.viewport);
+    //  console.log("root =" + root.attr('class'));
+
+    root.removeClass(function (index, css) {
+        // col-md-offset-4
+        var regex = new RegExp("col-" + gridhelper.viewport + "-" + gridhelper.modus + "[0-9+]{1,2}");
+        // console.log(regex);
+        var m = css.match(regex);
+        return m ? m[0] : m
+        // console.log("oldClass = " + m);
+
+    });
 
     root.addClass(newClass);
+    //  console.log("- - - -  - " );
+
 
     this.updatePopover(id);
-};
 
-
-// show computed classes
-// ======================
-
-GridHelper.prototype.updatePopover = function (id) {
-
-    var html = this.getClassNames(id);
-
-    $('#popover_data_' + id).html(html);
-    $('#' + id).children('.ghb-info-code').children().children('.popover-content').html(html);
-
-    return html;
 };
 
 // hide Popovers
@@ -455,7 +556,6 @@ GridHelper.prototype.hideAllPopovers = function () {
     this.on_popover = false;
 };
 
-
 // show Popovers
 // ======================
 
@@ -465,7 +565,6 @@ GridHelper.prototype.showAllPopovers = function () {
     $('#gridhelper-popover-picto').addClass('active');
     this.on_popover = true;
 };
-
 
 // Toggle Popovers
 // ======================
@@ -484,9 +583,9 @@ GridHelper.prototype.toggleAllPopovers = function () {
 // ======================
 
 GridHelper.prototype.silent = function () {
+    this.hide();
     $('#gridhelper-monitor').hide();
 
-    this.hide();
     this.on_silent = true;
 };
 
@@ -496,11 +595,10 @@ GridHelper.prototype.silent = function () {
 
 GridHelper.prototype.go = function () {
     $('#gridhelper-monitor').show();
-
     this.hide();
+
     this.on_silent = false;
 };
-
 
 // hide
 // ======================
@@ -511,12 +609,12 @@ GridHelper.prototype.hide = function () {
 
     var all_panels = $(".ghb-infopanel");
     all_panels.hide();
-
     $('#responsive-status').hide();
     $('#gridhelper-onoff-button-bottom').show();
     $('#gridhelper-onoff-button-top').hide();
     $('#gridhelper-onoff-text').hide();
     $('#gridhelper-popover-button').hide();
+
 
     this.on = false;
 };
@@ -574,35 +672,22 @@ GridHelper.prototype.addGripHelperMonitor = function () {
         + "</div>"
         + "</div>";
 
-    $('body').append(html, false);
+
+    $('body').append(html);
 
 };
 
 
-// toggle
+// addTootlip
 // ======================
 
-GridHelper.prototype.markColumn = function (id) {
+GridHelper.prototype.addToolTip = function () {
 
-    this.demarkColumn();
-    $("#" + id + "-hover").addClass("ghb-hover");
-
-
-};
-
-// toggle
-// ======================
-
-GridHelper.prototype.demarkColumn = function () {
-
-    $(".ghb-hover").removeClass("ghb-hover");
-
-};
+    $(".tip-top").tooltip({placement: 'top', title: 'test'});
+}
 
 
-// Helper-Function for Array
 // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
-// ======================
 Object.defineProperty(Array.prototype, "removeItem", {
     enumerable: false,
     value: function (itemToRemove) {
@@ -624,3 +709,9 @@ Object.defineProperty(Array.prototype, "removeItem", {
         return removeCounter;
     }
 });
+
+
+
+
+
+
