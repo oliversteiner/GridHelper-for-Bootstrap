@@ -65,4 +65,5 @@ Verwendung unter eigener Gefahr.
 Für Kinder unter 5 Jahren nicht geeignet, enthält schwerverdauliche Codestücke.
 
 ## Credits
+Coded by Oliver Steiner.
 Ein grosser Dank geht an: http://stackoverflow.com/

@@ -95,7 +95,7 @@
     border-right: solid rgba(0, 0, 0, 0.8) 1px;
     border-bottom: solid rgba(0, 0, 0, 0.8) 1px;
     border-radius: 0 0 8px 0;
-    z-index: +1;
+    z-index: 400;
 }
 
 /* TODO - check this - this cold be evil: */
@@ -114,8 +114,11 @@
 
 /*nested cols*/
 .row .row .ghb-infopanel {
-    margin-top: 20px;
+    margin-top: 25px;
     background-color: rgba(0, 0, 0, 0.3);
+    border-right: solid rgba(0, 0, 0, 0.4) 1px;
+    border-bottom: solid rgba(0, 0, 0, 0.4) 1px;
+    left: 10px;
 
 }
 
@@ -183,7 +186,6 @@
 
 .ghb-info-code > .popover.right > .arrow::after {
     border-right-color: rgba(0, 0, 0, 0.8);
-
 }
 
 .ghb-info-code > .popover {
@@ -192,7 +194,6 @@
     min-width: 200px;
     font-family: monospace;
     font-weight: 300;
-
 }
 
 .ghb-info-offset,
@@ -278,6 +279,10 @@ Landscape phones and smaller */
 
 }
 
+.popover {
+    z-index: 3000;
+}
+
 .popover-list {
     margin: 0;
     padding: 0;
@@ -318,4 +323,12 @@ Landscape phones and smaller */
 
 }
 
+.ghb-marc-active {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 200;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
