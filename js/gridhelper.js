@@ -73,7 +73,7 @@ GridHelper.prototype.init = function () {
     // Options and Init of Popover with classnames
     $('[rel=gh-popover]').popover({
         html: true,
-        container : '',
+        container: '',
         trigger: this.options.popover_trigger,
         placement: 'right',
         content: function () {
@@ -83,9 +83,9 @@ GridHelper.prototype.init = function () {
     $('[data-toggle="tooltip"]').tooltip();
 
 
-    $(".ghb-infopanel").hover(function(){
+    $(".ghb-infopanel").hover(function () {
         $(this).parent().children('.ghb-marc').addClass('ghb-marc-active');
-    }, function(){
+    }, function () {
         $(this).parent().children('.ghb-marc').removeClass('ghb-marc-active');
     });
 
@@ -171,13 +171,12 @@ GridHelper.prototype.addColPanel = function () {
     // foreach col take all classes and show on Panel
     $.each(all_col, function () {
 
-        gridhelper.cols++;
         var id = "ghb-" + gridhelper.cols;
 
         var info_panel = '<div class="ghb-marc" id="' + id + '-marc"></div>'
             + '<div class="ghb-infopanel" id="' + id + '" '
-          //  + 'onmouseover="gridhelper.markColumn(\''+id+'\')"'
-          //  + 'mouseout="gridhelper.alert()"
+                //  + 'onmouseover="gridhelper.markColumn(\''+id+'\')"'
+                //  + 'mouseout="gridhelper.alert()"
             + '>'
             + '<div class="ghb-select ghb-info-col" data-toggle="tooltip" data-placement="top" data-original-title="col"></div>'
             + '<div class="ghb-select ghb-info-offset" data-toggle="tooltip" data-placement="top" data-original-title="offset"></div>'
@@ -191,6 +190,8 @@ GridHelper.prototype.addColPanel = function () {
         $(this).prepend(info_panel);
         // add the Popover who shows the ClassNames
         gridhelper.addPopover(id);
+        gridhelper.cols++;
+
 
     });
     // add all Input-elements
@@ -414,7 +415,11 @@ GridHelper.prototype.updateColNumber = function (id, modes) {
 
     var col_number = elem.val();
 
-    if (modes == "col") { modes2 = ""} else {modes2 = modes+"-"}
+    if (modes == "col") {
+        modes2 = ""
+    } else {
+        modes2 = modes + "-"
+    }
 
     var newClass = "col-" + this.viewport + "-" + modes2 + col_number;
 
@@ -580,7 +585,7 @@ GridHelper.prototype.addGripHelperMonitor = function () {
 GridHelper.prototype.markColumn = function (id) {
 
     this.demarkColumn();
-$("#"+id+"-hover").addClass("ghb-hover");
+    $("#" + id + "-hover").addClass("ghb-hover");
 
 
 };

@@ -1,0 +1,95 @@
+// BLANK
+{
+  "id": "",
+  "author": "OST",
+  "name" :"blank",
+  "rows": [
+    {
+      "id": "row-1",
+      "cells": [
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-2",
+      "cells": [
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-3",
+      "cells": [
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        },
+        {
+          "id": "",
+          "content": "",
+          "class": [
+            "col-md-2",
+            "col-lg-4"
+          ]
+        }
+      ]
+    }
+  ]
+}
