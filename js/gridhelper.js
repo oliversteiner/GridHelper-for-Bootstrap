@@ -282,7 +282,7 @@ GridHelper.prototype.getColNumber = function (id, modus) {
         case "push":
             mod = "-push";
             break;
-        default :
+        default :/**/
             mod = "";
             break;
     }
@@ -366,12 +366,15 @@ GridHelper.prototype.updateClassNames = function (id) {
 
 
 }
+
 // show computed classes
 // ======================
 
 GridHelper.prototype.updatePopover = function (id) {
 
     var html = this.getClassNames(id);
+    $('#' + id).children('.ghb-info-').children().children().children().html("");
+    code
     $('#' + id).children('.ghb-info-code').children().children().children().html(html);
 
 }
