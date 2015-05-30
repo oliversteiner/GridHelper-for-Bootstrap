@@ -38,7 +38,7 @@ function GridHelper(options) {
     this.on_popover = 0;
     this.options = options;
     this.modes = "col";
-    this.cols = 1;
+    this.cols = 0;
 }
 
 
