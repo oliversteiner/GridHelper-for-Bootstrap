@@ -278,6 +278,10 @@ Landscape phones and smaller */
 
 }
 
+.popover{
+    z-index: 3000;
+}
+
 .popover-list {
     margin: 0;
     padding: 0;
