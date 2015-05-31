@@ -109,14 +109,15 @@ $.getJSON("./blank.json", function (data) {
          "name" :"blank",
          "rows": []*/
 
-        console.log("key: " + key + " - " + value);
+   //     console.log("key: " + key + " - " + value);
     });
 
-    console.log(data['rows']);
+   // console.log(data['rows']);
     var next = data['rows'];
 
     $.each(next, function (key, rows) {
-        console.log("next: " + key + " - " + rows);
+   //     console.log("next: " + key + " - " + rows);
+        console.log("New Row");
 
         var elem_row = document.createElement('div');
         $(elem_row).addClass('row');
@@ -125,37 +126,42 @@ $.getJSON("./blank.json", function (data) {
 
         // ROWS
         $.each(rows, function (key, value) {
-            console.log("row: " + key + " - " + value);
+     //       console.log("row: " + key + " - " + value);
 
 
             // CELLS
-            console.log("cells - " + rows['cells']);
+        //    console.log("cells - " + rows['cells']);
             var cells = rows['cells'];
 
 
-            $.each(cells, function (key, value) {
+            $.each(cells, function (cell, attr) {
+                console.log("    New cell");
 
-                console.log("cells2: " + key + " - " + value);
+
+                //   console.log("cells2: " + key + " - " + value);
                 var elem_cell = document.createElement('div');
-                $(elem_cell).addClass('cell');
-                $(elem_cell).attr('id', name);
-                elem_row.appendChild(elem_cell);
+                console.log(attr['id']);
+                console.log(attr['content']);
+              //  console.log(attr['class']);
+
+                $(elem_cell).addClass( 'cell');
+                $(elem_cell).addClass( attr['class']);
+                $(elem_cell).attr('id', attr['id']);
+                $(elem_cell).html( attr['id']);
 
 
-                $.each(value, function (key, value) {
+                $.each(attr, function (key, value) {
                     /*  "id": "",
                      "content": "",
                      "class": []
                      ]*/
 
-                    console.log("cells3: " + key + " - " + value);
+                    console.log("     cells: " + key + " - " + value);
 
-                    console.log("cells4 - " + cells['cells']);
-                    var cells2 = cells['cells'];
 
 
                     //each CELL
-                    console.log("cell: " + key + " - " + value);
+                  //  console.log("cell: " + key + " - " + value);
 
 
 
@@ -195,16 +201,19 @@ $.getJSON("./blank.json", function (data) {
                      });
                      */
 
-                })
-            })
+                });
+                console.log("    -----"); // new Cell
+                elem_row.appendChild(elem_cell);
+
+            });
 
 
         });
+        console.log("    -----"); // new Cell // new Row
 
 
     });
 
-    ;
 
 
     $(document).ready(function () {
