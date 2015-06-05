@@ -1,227 +1,90 @@
-// BLANK
-var test = {
-    "id": "",
-    "author": "OST",
-    "name": "blank",
-    "rows": [
-        {
-            "id": "row-1",
-            "cells": [
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "row-2",
-            "cells": [
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "row-3",
-            "cells": [
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                },
-                {
-                    "id": "",
-                    "content": "",
-                    "class": [
-                        "col-md-2",
-                        "col-lg-4"
-                    ]
-                }
-            ]
-        }
-    ]
-};
-
-console.log("start");
+function loadGrid(json) {
+    $.getJSON(json, function (data) {
+        console.log("root");
 
 
-$.getJSON("./blank.json", function (data) {
+        // Create Elem <div>
+        var root = document.createElement('div');
 
-    var root = document.createElement('div');
-    $(root).addClass('container');
-
-    $.each(data, function (key, value) {
-
-        /*        "id": "",
-         "author": "OST",
-         "name" :"blank",
-         "rows": []*/
-
-   //     console.log("key: " + key + " - " + value);
-    });
-
-   // console.log(data['rows']);
-    var next = data['rows'];
-
-    $.each(next, function (key, rows) {
-   //     console.log("next: " + key + " - " + rows);
-        console.log("New Row");
-
-        var elem_row = document.createElement('div');
-        $(elem_row).addClass('row');
-        $(elem_row).attr('id', rows['id']);
-        root.appendChild(elem_row);
-
-        // ROWS
-        $.each(rows, function (key, value) {
-     //       console.log("row: " + key + " - " + value);
+        // ==================  Container  ========================
+        console.log("container");
 
 
-            // CELLS
-        //    console.log("cells - " + rows['cells']);
-            var cells = rows['cells'];
+        // Create Elem <div> for Container
+        var container = document.createElement('div');
 
+        // Read the Meta-Information an add them  to Elem Container
+        $.each(data, function (key, attr) {
+            // id
+            // author
+            // name
+            // rows - Array
 
-            $.each(cells, function (cell, attr) {
-                console.log("    New cell");
-
-
-                //   console.log("cells2: " + key + " - " + value);
-                var elem_cell = document.createElement('div');
-                console.log(attr['id']);
-                console.log(attr['content']);
-              //  console.log(attr['class']);
-
-                $(elem_cell).addClass( 'cell');
-                $(elem_cell).addClass( attr['class']);
-                $(elem_cell).attr('id', attr['id']);
-                $(elem_cell).html( attr['id']);
-
-
-                $.each(attr, function (key, value) {
-                    /*  "id": "",
-                     "content": "",
-                     "class": []
-                     ]*/
-
-                    console.log("     cells: " + key + " - " + value);
-
-
-
-                    //each CELL
-                  //  console.log("cell: " + key + " - " + value);
-
-
-
-                    /*
-
-                     var elem_cell = document.createElement('div');
-                     $(elem_cell).addClass('cell');
-                     $(elem_cell).attr('id', name);
-                     elem_row.appendChild(elem_cell);
-
-                     $.each(row, function (name, cell) {
-                     console.log("cell: " + name + " - " + cell);
-
-
-
-                     var classnames = "test";
-
-                     $.each(cell, function (name, classes) {
-                     console.log("cell: " + name + " - " + classes);
-
-                     var i = 0;
-
-                     $.each(cell, function (modes, number) {
-
-                     console.log("modes: " + modes + " - " + number);
-                     classnames += " " + modes + "-" + number;
-                     i++;
-                     });
-
-                     console.log("classname- " + classnames);
-                     $(elem_cell).addClass(classnames);
-                     $(elem_cell).html(classnames);
-
-                     });
-
-
-                     });
-                     */
-
-                });
-                console.log("    -----"); // new Cell
-                elem_row.appendChild(elem_cell);
-
-            });
-
+            // Add Meta
+            $(container).addClass('container');
+            $(container).attr('id', data['id']);
+            $(container).attr('data-author', data['author']);
+            $(container).attr('data-name', data['name']);
 
         });
-        console.log("    -----"); // new Cell // new Row
 
+        // Add Elem Container to Elem Root
+        root.appendChild(container);
+
+
+        // ==================  ROWS  ========================
+        var rows = data['rows'];
+
+        $.each(rows, function (key, attr) {
+            console.log(" ");
+            console.log("  New Row       " + attr['id']);
+            // id
+            // cells - Array
+
+            // Create Elem <div> for ROW
+            var elem_row = document.createElement('div');
+            $(elem_row).addClass('row');
+            $(elem_row).attr('id', attr['id']);
+
+            // Add Elem ROW to Elem Container
+            container.appendChild(elem_row);
+
+
+            // ==================  CELLS  ========================
+            var cells = attr['cells'];
+
+            $.each(cells, function (cell, attr) {
+                console.log("    New cell    " + attr['id']);
+                // id
+                // content
+                // class - Array
+
+                // Create Elem <div> for Cell
+                var elem_cell = document.createElement('div');
+                $(elem_cell).attr('id', attr['id']);
+                $(elem_cell).addClass('cell');
+                $(elem_cell).html(attr['content']);
+
+                // Classes from Array to String
+                var classes = "";
+                $.each(attr['class'], function (key, value) {
+                    classes += " " + value;
+                });
+                $(elem_cell).addClass(classes);
+
+                // Add Elem Cell to Elem Row
+                elem_row.appendChild(elem_cell);
+
+            }); // CELL
+
+        }); // ROW
+
+        $("#placeholder").append(root);
 
     });
 
 
-
-    $(document).ready(function () {
-        $("#input").append(root);
-    });
-
-})
-;
+}
 
 
 

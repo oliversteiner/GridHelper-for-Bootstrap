@@ -1,7 +1,7 @@
 {
-  "id": "blank",
+  "id": "something",
   "author": "OST",
-  "name": "blank",
+  "name": "Something",
   "rows": [
     {
       "id": "row-1",
@@ -10,18 +10,24 @@
           "id": "cell-1",
           "content": "cell-1",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-2",
           "content": "cell-2",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-3",
           "content": "cell-3",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         }
       ]
@@ -33,12 +39,16 @@
           "id": "cell-4",
           "content": "cell-4",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-5",
           "content": "cell-5",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         }
       ]
@@ -50,24 +60,32 @@
           "id": "cell-6",
           "content": "cell-6",
           "class": [
+            "col-md-7",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-7",
           "content": "cell-7",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-8",
           "content": "cell-8",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         },
         {
           "id": "cell-9",
           "content": "cell-9",
           "class": [
+            "col-md-2",
+            "col-lg-4"
           ]
         }
       ]

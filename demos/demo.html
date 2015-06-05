@@ -15,7 +15,6 @@
 
     <!-- GridHelper for Bootstrap -->
     <link rel="stylesheet" href="../css/gridhelper.css">
-    <script src="../js/gridhelper.js"></script>
     <style>
         #input {
             background-color: #e9e9e9;
@@ -34,9 +33,9 @@
         }
 
         .cell {
-            min-height: 50px;
+            min-height: 100px;
             min-width: 50px;
-            padding: 5px;
+            padding: 35px;
             border: solid lavender 1px;
             background-color: #aec3e5;
             height: 50px;
@@ -46,16 +45,33 @@
             font-size: 20px;
             color: #6b7eaa;
             font-family: monospace;
-            padding-top: 15px;
 
 
         }
     </style>
 </head>
 <body>
-<div id="input"></div>
+<div id="placeholder"></div>
+
+
+
 
 <script src="demo.js"></script>
+<script src="../js/gridhelper.js"></script>
+
+<script>
+
+
+
+    // add Container to demo.html
+    $(document).ready(function () {
+
+        loadGrid('./something.json');
+       // gridhelper.init();
+
+    });
+
+</script>
 
 </body>
 </html>
