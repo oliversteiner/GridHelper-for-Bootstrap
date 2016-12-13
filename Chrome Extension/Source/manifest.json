@@ -1,0 +1,47 @@
+{
+  "name": "Gridhelper for Bootstrap",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Show all Rows and Cols of the Bootstrap Grid",
+  "homepage_url": "http://mollo.ch/projects/gridhelper",
+  "background": {
+    "scripts": [
+
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "Inject!",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "https://*/*",
+    "http://*/*",
+    "tabs",
+    "activeTab"
+  ],
+  "icons": {
+    "16": "images/icon_16.png",
+    "48": "images/icon_48.png",
+    "128": "images/icon_128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "thirdparty/jquery-3.1.1.min.js",
+        "thirdparty/bootstrap.min.js",
+        "gridhelper.js"
+      ],
+      "css": [
+        "css/gridhelper.css",
+        "thirdparty/css/bootstrap.min.css"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
